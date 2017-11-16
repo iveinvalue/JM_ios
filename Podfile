@@ -7,7 +7,6 @@ target 'music2' do
   pod 'CircularSlider'
   pod 'SwiftMessages'
   pod 'NYAlertViewController'
-  pod 'PKHUD', '~> 4.0'
   # Pods for music2
 
   target 'music2Tests' do

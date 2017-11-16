@@ -19,7 +19,6 @@
 		CE76DD751F889F8F00B4441B /* music2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD741F889F8F00B4441B /* music2Tests.swift */; };
 		CE76DD801F889F8F00B4441B /* music2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD7F1F889F8F00B4441B /* music2UITests.swift */; };
 		CE76DD8E1F889FFE00B4441B /* FirstCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD8D1F889FFE00B4441B /* FirstCustomCell.swift */; };
-		CE83CF2E1FAE25DF00790466 /* PKHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE83CF2F1FAE25DF00790466 /* PKHUD.framework */; };
 		CEF1A2A71FA311E800A595CF /* CircularSlider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1A2A81FA311E800A595CF /* CircularSlider.framework */; };
 		CEF1A2A91FA32D3200A595CF /* SwiftMessages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1A2AA1FA32D3200A595CF /* SwiftMessages.framework */; };
 		CEF1B1561F8A349200407F67 /* main_music.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF1B1551F8A349200407F67 /* main_music.swift */; };
@@ -99,7 +98,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE83CF2E1FAE25DF00790466 /* PKHUD.framework in Frameworks */,
 				CE1569A21FA33A36002E83AE /* NYAlertViewController.framework in Frameworks */,
 				CEF1A2A91FA32D3200A595CF /* SwiftMessages.framework in Frameworks */,
 				CEF1A2A71FA311E800A595CF /* CircularSlider.framework in Frameworks */,
@@ -492,14 +490,12 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-music2/Pods-music2-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CircularSlider/CircularSlider.framework",
 				"${BUILT_PRODUCTS_DIR}/NYAlertViewController/NYAlertViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/PKHUD/PKHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CircularSlider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NYAlertViewController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PKHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

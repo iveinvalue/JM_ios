@@ -11,7 +11,7 @@ import AudioToolbox
 import Foundation
 import AVFoundation
 import MediaPlayer
-import PKHUD
+
 
 var temp = ""
 let myGroup = DispatchGroup()
@@ -39,6 +39,7 @@ class SecondViewController: UITableViewController {
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
     }
@@ -55,8 +56,8 @@ class SecondViewController: UITableViewController {
         let textFieldInsideSearchBar = search.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.textColor = UIColor.white
         
-        let textFieldInsideSearchBarLabel = textFieldInsideSearchBar!.value(forKey: "placeholderLabel") as? UILabel
-        textFieldInsideSearchBarLabel?.textColor = UIColor.white
+        //let textFieldInsideSearchBarLabel = textFieldInsideSearchBar!.value(forKey: "placeholderLabel") as? UILabel
+        //textFieldInsideSearchBarLabel?.textColor = UIColor.white
        
         /*
         gearRefreshControl = GearRefreshControl(frame: self.view.bounds)
@@ -138,9 +139,7 @@ class SecondViewController: UITableViewController {
     }
     
     func refresh_table(){
-        PKHUD.sharedHUD.contentView = PKHUDProgressView()
-        PKHUD.sharedHUD.show()
-        PKHUD.sharedHUD.hide(afterDelay: 1.0) { success in}
+        
         
         let url = URL(string: "https://app." + main_str + ".co.kr/Iv3/SongList/j_RealTimeRankSongList.asp?svc=IV&unm=&pg=1&pgSize=100&apvn=30602&ditc=&uxtk=&uip=192.168.1.3&mts=Y")
         let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
@@ -251,6 +250,7 @@ class SecondViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         //print("section: \(indexPath.section)")//print("row: \(indexPath.row)")
         if SecondViewController.player != nil && SecondViewController.player.rate != 0 {
             SecondViewController.player.pause()

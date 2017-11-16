@@ -28,6 +28,7 @@ class FirstViewController: UITableViewController {
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = UIColor.white
         refresh(nil)
     }
     
@@ -54,7 +55,7 @@ class FirstViewController: UITableViewController {
         //let rightButton: UIBarButtonItem = UIBarButtonItem(title: "재생중", style: UIBarButtonItemStyle.done, target: self, action: #selector(FirstViewController.playing(_:)))
         //self.navigationItem.rightBarButtonItem = rightButton
         
-        refresh(nil)
+        //refresh(nil)
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -62,6 +63,8 @@ class FirstViewController: UITableViewController {
     }
     
     func refresh(_ button:UIBarButtonItem!){
+        mp3FileNames = []
+        sections = []
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         do {
             let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
@@ -74,8 +77,8 @@ class FirstViewController: UITableViewController {
             print(error.localizedDescription)
         }
         
-        //mp3FileNames.sort()
-        mp3FileNames.sort { $0 < $1 }
+        mp3FileNames.sort()
+        //mp3FileNames.sort { $0 < $1 }
         
         var index = 0;
         
@@ -221,6 +224,7 @@ class FirstViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         //print("section: \(indexPath.section)")
         //print("row: \(indexPath.row)")
         //print("id: \(unm_[indexPath.row])")
