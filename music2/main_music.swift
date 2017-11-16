@@ -104,7 +104,10 @@ class main_music: UIViewController {
         let playerItem = AVPlayerItem(url: SecondViewController.myurl! as URL )
         
         let songAsset = AVURLAsset(url: SecondViewController.myurl! as URL, options: nil)
-        lyric = songAsset.lyrics!
+        if !(songAsset.lyrics == nil){
+            lyric =  songAsset.lyrics!
+        }
+        
         //print(lyricsText)
         
         var t_title = ""

@@ -66,6 +66,7 @@
 		94684D62CAD3FFCD17486F87 /* Pods_music2Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_music2Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B31B6939C1FAAFFF15B1BE85 /* Pods-music2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-music2Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-music2Tests/Pods-music2Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CE1569A31FA33A36002E83AE /* NYAlertViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NYAlertViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE3762471FBDB8EE00DD38D8 /* MYTableViewIndex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MYTableViewIndex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD5A1F889F8F00B4441B /* music2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = music2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE76DD5F1F889F8F00B4441B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -186,6 +187,7 @@
 		CEF1B1581F8A430800407F67 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE3762471FBDB8EE00DD38D8 /* MYTableViewIndex.framework */,
 				CE83CF2F1FAE25DF00790466 /* PKHUD.framework */,
 				CE7E23B51FA7293F00EFE52A /* GearRefreshControl.framework */,
 				CE7E23B31FA727A100EFE52A /* PullToBounce.framework */,

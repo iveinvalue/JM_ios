@@ -39,15 +39,24 @@ class SecondViewController: UITableViewController {
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view.backgroundColor = .white
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(SecondViewController.refresh2(_:)))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(SecondViewController.playing(_:)))
+       
+        let textFieldInsideSearchBar = search.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.white
+        
+        let textFieldInsideSearchBarLabel = textFieldInsideSearchBar!.value(forKey: "placeholderLabel") as? UILabel
+        textFieldInsideSearchBarLabel?.textColor = UIColor.white
        
         /*
         gearRefreshControl = GearRefreshControl(frame: self.view.bounds)

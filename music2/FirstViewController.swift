@@ -17,7 +17,7 @@ class save_cell: UITableViewCell {
 }
 
 class FirstViewController: UITableViewController {
-
+    var sections : [(index: Int, length :Int, title: String)] = Array()
     //var gearRefreshControl: GearRefreshControl!
     var docsurl : URL! = nil
     var mp3FileNames = [String]()
@@ -28,12 +28,13 @@ class FirstViewController: UITableViewController {
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view.backgroundColor = .white
+        refresh(nil)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(FirstViewController.refresh(_:)))
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(FirstViewController.refresh(_:)))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(FirstViewController.playing(_:)))
         
         /*
@@ -73,13 +74,42 @@ class FirstViewController: UITableViewController {
             print(error.localizedDescription)
         }
         
-        mp3FileNames.sort()
+        //mp3FileNames.sort()
+        mp3FileNames.sort { $0 < $1 }
+        
+        var index = 0;
+        
+        for i in 0...mp3FileNames.count - 1{
+
+            let commonprefix_ = mp3FileNames[i].commonPrefix(with: mp3FileNames[index], options: .caseInsensitive)
+            
+            if (commonprefix_.characters.count == 0 ) {
+                let string = mp3FileNames[index];
+                
+                var firstCharacter = string[string.startIndex]
+                
+                
+                
+                let title = "\(firstCharacter)"
+                
+                let newSection = (index: index, length: i - index, title: title)
+                
+                //if !(sections.contains {$2.contains(title)})
+     
+                sections.append(newSection)
+                index = i;
+                
+            }
+            
+        }
         
         self.save_table.reloadData()
         self.save_table.dataSource = self
         self.save_table.delegate = self
         //self.gearRefreshControl.endRefreshing()
     }
+    
+   
     
     @objc func playing(_ button:UIBarButtonItem!){
         if !( SecondViewController.myurl == nil){
@@ -92,10 +122,30 @@ class FirstViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mp3FileNames.count
+        
+        return sections[section].length
+        
     }
+    //테이블 섹션 개수
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+   
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
+        
+        return sections[section].title
+        
+    }
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        
+        return index
+        
+    }
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+         return sections.map { $0.title }
+    }
+    
     //제거 가능 설정
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -123,10 +173,15 @@ class FirstViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = save_table.dequeueReusableCell(withIdentifier: "save_cell", for: indexPath) as! save_cell
         
-        cell.title.text  = mp3FileNames[indexPath.row].components(separatedBy: " - ")[0]
-        cell.artist.text  = mp3FileNames[indexPath.row].components(separatedBy: " - ")[1]
-        cell.image_.image = load(fileName: "tmp/" + mp3FileNames[indexPath.row] + ".jpg")
+        cell.title.text = mp3FileNames[sections[indexPath.section].index + indexPath.row].components(separatedBy: " - ")[0]
+        cell.artist.text  = mp3FileNames[sections[indexPath.section].index + indexPath.row].components(separatedBy: " - ")[1]
+        cell.image_.image = load(fileName: "tmp/" + mp3FileNames[sections[indexPath.section].index + indexPath.row] + ".jpg")
+        //cell.title.text  = mp3FileNames[indexPath.row].components(separatedBy: " - ")[0]
+        //cell.artist.text  = mp3FileNames[indexPath.row].components(separatedBy: " - ")[1]
+        //cell.image_.image = load(fileName: "tmp/" + mp3FileNames[indexPath.row] + ".jpg")
     
+        
+        
         return cell
     }
     
@@ -169,7 +224,7 @@ class FirstViewController: UITableViewController {
         //print("section: \(indexPath.section)")
         //print("row: \(indexPath.row)")
         //print("id: \(unm_[indexPath.row])")
-        let myurl  = docsurl.appendingPathComponent("/" + mp3FileNames[indexPath.row] + ".mp3") as NSURL
+        let myurl  = docsurl.appendingPathComponent("/" + mp3FileNames[sections[indexPath.section].index + indexPath.row] + ".mp3") as NSURL
        SecondViewController.myurl = myurl
         
         do{
@@ -197,4 +252,22 @@ class FirstViewController: UITableViewController {
         return .portrait
     }
 }
-
+extension String {
+    var hangul: String {
+        get {
+            let hangle = [
+                ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"],
+                ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"],
+                ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"]
+            ]
+            
+            return characters.reduce("") { result, char in
+                if case let code = Int(String(char).unicodeScalars.reduce(0){$0.0 + $0.1.value}) - 44032, code > -1 && code < 11172 {
+                    let cho = code / 21 / 28, jung = code % (21 * 28) / 28, jong = code % 28;
+                    return result + hangle[0][cho] + hangle[1][jung] + hangle[2][jong]
+                }
+                return result + String(char)
+            }
+        }
+    }
+}
