@@ -19,7 +19,7 @@
 		CE76DD6A1F889F8F00B4441B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE76DD681F889F8F00B4441B /* LaunchScreen.storyboard */; };
 		CE76DD751F889F8F00B4441B /* music2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD741F889F8F00B4441B /* music2Tests.swift */; };
 		CE76DD801F889F8F00B4441B /* music2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD7F1F889F8F00B4441B /* music2UITests.swift */; };
-		CE76DD8E1F889FFE00B4441B /* FirstCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD8D1F889FFE00B4441B /* FirstCustomCell.swift */; };
+		CE994E0520FE10CE002F833D /* FirstCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE994E0420FE10CE002F833D /* FirstCustomCell.swift */; };
 		CED2A6D320F21838000D3CEE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED2A6D220F21838000D3CEE /* MediaPlayer.framework */; };
 		CEF1A2A71FA311E800A595CF /* CircularSlider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1A2A81FA311E800A595CF /* CircularSlider.framework */; };
 		CEF1A2A91FA32D3200A595CF /* SwiftMessages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1A2AA1FA32D3200A595CF /* SwiftMessages.framework */; };
@@ -83,10 +83,10 @@
 		CE76DD7B1F889F8F00B4441B /* music2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = music2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD7F1F889F8F00B4441B /* music2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = music2UITests.swift; sourceTree = "<group>"; };
 		CE76DD811F889F8F00B4441B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CE76DD8D1F889FFE00B4441B /* FirstCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirstCustomCell.swift; path = ../FirstCustomCell.swift; sourceTree = "<group>"; };
 		CE7E23B31FA727A100EFE52A /* PullToBounce.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PullToBounce.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7E23B51FA7293F00EFE52A /* GearRefreshControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GearRefreshControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE83CF2F1FAE25DF00790466 /* PKHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PKHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE994E0420FE10CE002F833D /* FirstCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstCustomCell.swift; sourceTree = "<group>"; };
 		CED2A6D220F21838000D3CEE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CEF1A2A81FA311E800A595CF /* CircularSlider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CircularSlider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF1A2AA1FA32D3200A595CF /* SwiftMessages.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftMessages.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,8 +156,8 @@
 			isa = PBXGroup;
 			children = (
 				CEF1B1571F8A430800407F67 /* music2.entitlements */,
+				CE994E0420FE10CE002F833D /* FirstCustomCell.swift */,
 				CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */,
-				CE76DD8D1F889FFE00B4441B /* FirstCustomCell.swift */,
 				CE76DD5F1F889F8F00B4441B /* FirstViewController.swift */,
 				CE76DD611F889F8F00B4441B /* SecondViewController.swift */,
 				CE76DD631F889F8F00B4441B /* Main.storyboard */,
@@ -537,9 +537,9 @@
 				CE76DD621F889F8F00B4441B /* SecondViewController.swift in Sources */,
 				CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */,
 				CE76DD601F889F8F00B4441B /* FirstViewController.swift in Sources */,
-				CE76DD8E1F889FFE00B4441B /* FirstCustomCell.swift in Sources */,
 				CE26A0EF20F21F4600D94653 /* JPlayer.swift in Sources */,
 				CEF1B1561F8A349200407F67 /* main_music.swift in Sources */,
+				CE994E0520FE10CE002F833D /* FirstCustomCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
