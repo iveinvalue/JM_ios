@@ -216,6 +216,11 @@ open class JPlayer: NSObject, AVAudioPlayerDelegate {
         if let image = UIImage(named: currentPlaybackItem.albumImageName) {
             nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: image)
         }
+        /*
+        let image = UIImage(named: currentPlaybackItem.albumImageName)!
+        let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { (size) -> UIImage in
+            return image
+        })*/
         
         self.configureNowPlayingInfo(nowPlayingInfo as [String : AnyObject]?)
         

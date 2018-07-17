@@ -92,7 +92,7 @@ class main_music: UIViewController {
                 let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation")
                 
                 rotationAnimation.fromValue = 0.0
-                rotationAnimation.toValue = Float(M_PI * 2.0)
+                rotationAnimation.toValue = Float(Double.pi * 2.0)
                 rotationAnimation.duration = duration
                 rotationAnimation.repeatCount = Float.infinity
                 

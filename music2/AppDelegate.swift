@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let commandCenter = MPRemoteCommandCenter.shared()
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
         let notificationCenter = NotificationCenter.default
-        let bundle = Bundle.main
+        //let bundle = Bundle.main
         
         self.player = JPlayer(dependencies: (audioSession, commandCenter, nowPlayingInfoCenter, notificationCenter))
         

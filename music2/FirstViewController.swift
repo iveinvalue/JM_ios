@@ -130,7 +130,7 @@ class FirstViewController: UITableViewController {
         if mp3FileNames.count > 0 {
             for i in 0...mp3FileNames.count - 1{
                 let commonprefix_ = mp3FileNames[i].commonPrefix(with: mp3FileNames[index], options: .caseInsensitive)
-                if (commonprefix_.characters.count == 0 ) {
+                if (commonprefix_.count == 0 ) {
                     let string = mp3FileNames[index];
                     let firstCharacter = string[string.startIndex]
                     //print(mp3FileNames)
@@ -303,7 +303,7 @@ extension String {
                 ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"]
             ]
             
-            return characters.reduce("") { result, char in
+            return reduce("") { result, char in
                 if case let code = Int(String(char).unicodeScalars.reduce(0){$0.0 + $0.1.value}) - 44032, code > -1 && code < 11172 {
                     let cho = code / 21 / 28, jung = code % (21 * 28) / 28, jong = code % 28;
                     return result + hangle[0][cho] + hangle[1][jung] + hangle[2][jong]

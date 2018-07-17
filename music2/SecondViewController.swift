@@ -246,7 +246,7 @@ class SecondViewController: UITableViewController {
                 //self.gearRefreshControl.endRefreshing()
                 
             }
-            catch {}
+            
         }
         task.resume()
     }
@@ -398,7 +398,7 @@ extension SecondViewController: UISearchBarDelegate {
         let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
             guard let data = data, error == nil else { return }
             //print(NSString(data: data, encoding: String.Encoding.utf8.rawValue))
-            let text = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as! String
+            let text = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
            print(text)
             var realtext = text
             realtext = realtext.replacingOccurrences(of: "%28", with: "(")
@@ -441,7 +441,7 @@ extension SecondViewController: UISearchBarDelegate {
                                 }
                                 do {
                                     try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-                                } catch (let _) {
+                                } catch ( _) {
                                 }
                             }
                         }
@@ -481,11 +481,19 @@ extension UIImageView{
     func imageFromUrl(urlString: String) {
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)
+            
+            let task = URLSession.shared.dataTask(with: request){ data, response, error in
+                if let imageData = data as NSData? {
+                    self.image = UIImage(data: imageData as Data)
+                }
+            }
+            task.resume()
+            /*
             NSURLConnection.sendAsynchronousRequest(request as URLRequest, queue: .main, completionHandler: { (response, data, error) in
                 if let imageData = data as NSData? {
                     self.image = UIImage(data: imageData as Data)
                 }
-            })
+            })*/
         }
     }
     
