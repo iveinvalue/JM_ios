@@ -1,18 +1,21 @@
 PODS:
   - CircularSlider (1.1.2)
+  - DTZFloatingActionButton (0.2.0)
   - NYAlertViewController (1.3.0)
   - SwiftMessages (4.1.0)
 
 DEPENDENCIES:
   - CircularSlider
+  - DTZFloatingActionButton
   - NYAlertViewController
   - SwiftMessages
 
 SPEC CHECKSUMS:
   CircularSlider: 448f9f7723b845ccd470dac41981feb192e20c50
+  DTZFloatingActionButton: 9dc86d3e566c2c601d82e9c86003289dc8b7559b
   NYAlertViewController: b93f82e2c1fc6d5e9485512ddbe7b481f463a074
   SwiftMessages: 1bacc783c8f10bdfdc57c14860cae8a1f1fa6591
 
-PODFILE CHECKSUM: 0bdf03183ed8b577115ded6fa571b2cddb6d836d
+PODFILE CHECKSUM: b364b33621b46231293e3fa6ef36ecf3c81c3304
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

@@ -7,6 +7,7 @@ target 'music2' do
   pod 'CircularSlider'
   pod 'SwiftMessages'
   pod 'NYAlertViewController'
+  pod 'DTZFloatingActionButton'
   # Pods for music2
 
   target 'music2Tests' do

@@ -8,7 +8,9 @@
 
 import UIKit
 import AVFoundation
-
+import DTZFloatingActionButton
+import SwiftMessages
+import MediaPlayer
 
 class save_cell: UITableViewCell {
     @IBOutlet weak var artist: UILabel!
@@ -27,16 +29,60 @@ class FirstViewController: UITableViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = UIColor.white
+        //self.navigationController?.view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = UIColor.red
+        //navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        //navigationController?.navigationBar.shadowImage = UIImage()
         refresh(nil)
+        DTZFABManager.shared.button().handler = {
+            button in
+            if !( SecondViewController.myurl == nil){
+                let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "main_music") as! main_music
+                self.navigationController?.pushViewController(secondViewController, animated: true)
+            }
+            //print("Tapped")
+        }
+        DTZFABManager.shared.show()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //DTZFABManager.shared.hide()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        //let query = MPMediaQuery()
+        //print(query.items![0].title)
+        //MPMusicPlayerController.systemMusicPlayer().setQueue(with: MPMediaQuery.songs())
+        //MPMusicPlayerController.systemMusicPlayer().play()
+        
+        DTZFABManager.shared.button().handler = {
+            button in
+            if !( SecondViewController.myurl == nil){
+                let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "main_music") as! main_music
+                self.navigationController?.pushViewController(secondViewController, animated: true)
+            }else{
+                var config = SwiftMessages.Config()
+                config.duration = .seconds(seconds: 0.6)
+                config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
+                
+                let view = MessageView.viewFromNib(layout: .statusLine)
+                view.configureTheme(.error)
+                view.configureDropShadow()
+                let iconText = [""].sm_random()!
+                view.configureContent(title: "", body: "재생중인 음악이 없습니다.", iconText: iconText)
+                SwiftMessages.show(config: config, view: view)
+            }
+            //print("Tapped")
+        }
+        DTZFABManager.shared.button().paddingY = 14 + (self.tabBarController?.tabBar.frame.size.height)!
+        DTZFABManager.shared.button().buttonImage = UIImage(named: "player_icon")
+        DTZFABManager.shared.button().plusColor = UIColor.white
+        DTZFABManager.shared.show()
         
         //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(FirstViewController.refresh(_:)))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(FirstViewController.playing(_:)))
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(FirstViewController.playing(_:)))
         
         /*
         gearRefreshControl = GearRefreshControl(frame: self.view.bounds)
@@ -81,29 +127,20 @@ class FirstViewController: UITableViewController {
         //mp3FileNames.sort { $0 < $1 }
         
         var index = 0;
-        
-        for i in 0...mp3FileNames.count - 1{
-
-            let commonprefix_ = mp3FileNames[i].commonPrefix(with: mp3FileNames[index], options: .caseInsensitive)
-            
-            if (commonprefix_.characters.count == 0 ) {
-                let string = mp3FileNames[index];
-                
-                var firstCharacter = string[string.startIndex]
-                
-                
-                
-                let title = "\(firstCharacter)"
-                
-                let newSection = (index: index, length: i - index, title: title)
-                
-                //if !(sections.contains {$2.contains(title)})
-     
-                sections.append(newSection)
-                index = i;
-                
+        if mp3FileNames.count > 0 {
+            for i in 0...mp3FileNames.count - 1{
+                let commonprefix_ = mp3FileNames[i].commonPrefix(with: mp3FileNames[index], options: .caseInsensitive)
+                if (commonprefix_.characters.count == 0 ) {
+                    let string = mp3FileNames[index];
+                    let firstCharacter = string[string.startIndex]
+                    //print(mp3FileNames)
+                    let title = "\(firstCharacter)"
+                    let newSection = (index: index, length: i - index, title: title)
+                    //if !(sections.contains {$2.contains(title)})
+                    sections.append(newSection)
+                    index = i;
+                }
             }
-            
         }
         
         self.save_table.reloadData()
@@ -126,16 +163,17 @@ class FirstViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+       
         return sections[section].length
         
     }
     //테이블 섹션 개수
     override func numberOfSections(in tableView: UITableView) -> Int {
+       
         return sections.count
     }
    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String{
         
         return sections[section].title
         
@@ -146,7 +184,7 @@ class FirstViewController: UITableViewController {
         
     }
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-         return sections.map { $0.title }
+        return sections.map { $0.title };
     }
     
     //제거 가능 설정
@@ -164,7 +202,7 @@ class FirstViewController: UITableViewController {
             guard let dirPath = paths.first else {
                 return
             }
-            let filePath = "\(dirPath)/\(mp3FileNames[indexPath.row]).\("mp3")"
+            let filePath = "\(dirPath)/\(mp3FileNames[sections[indexPath.section].index + indexPath.row]).\("mp3")"
             do {
                 try fileManager.removeItem(atPath: filePath)
             } catch let error as NSError {
@@ -275,3 +313,5 @@ extension String {
         }
     }
 }
+
+

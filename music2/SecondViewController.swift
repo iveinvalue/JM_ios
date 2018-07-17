@@ -11,7 +11,8 @@ import AudioToolbox
 import Foundation
 import AVFoundation
 import MediaPlayer
-
+import DTZFloatingActionButton
+import SwiftMessages
 
 var temp = ""
 let myGroup = DispatchGroup()
@@ -38,23 +39,73 @@ class SecondViewController: UITableViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        //self.navigationController?.view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = UIColor.red
+        //navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        //navigationController?.navigationBar.shadowImage = UIImage()
+        
+        
+        DTZFABManager.shared.button().handler = {
+            button in
+            if !( SecondViewController.myurl == nil){
+                let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "main_music") as! main_music
+                self.navigationController?.pushViewController(secondViewController, animated: true)
+            }else{
+                var config = SwiftMessages.Config()
+                config.duration = .seconds(seconds: 0.6)
+                config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
+                
+                let view = MessageView.viewFromNib(layout: .statusLine)
+                view.configureTheme(.error)
+                view.configureDropShadow()
+                let iconText = [""].sm_random()!
+                view.configureContent(title: "", body: "재생중인 음악이 없습니다.", iconText: iconText)
+                SwiftMessages.show(config: config, view: view)
+            }
+            //print("Tapped")
+        }
+        DTZFABManager.shared.button().paddingY = 14 + (self.tabBarController?.tabBar.frame.size.height)!
+        DTZFABManager.shared.button().buttonImage = UIImage(named: "player_icon")
+        DTZFABManager.shared.button().plusColor = UIColor.white
+        DTZFABManager.shared.show()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //DTZFABManager.shared.hide()
     }
 
+    func checkMediaAccess() {
+        let authorizationStatus = MPMediaLibrary.authorizationStatus()
+        switch authorizationStatus {
+        case .notDetermined:
+            // Show the permission prompt.
+            MPMediaLibrary.requestAuthorization({[weak self] (newAuthorizationStatus: MPMediaLibraryAuthorizationStatus) in
+                // Try again after the prompt is dismissed.
+                self?.checkMediaAccess()
+            })
+        case .denied, .restricted:
+            // Do not use MPMediaQuery.
+            return
+        default:
+            // Proceed as usual.
+            break
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationController?.navigationBar.shadowImage = UIImage()
         
+        checkMediaAccess()
+
+        //navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        //navigationController?.navigationBar.shadowImage = UIImage()
+        
+
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(SecondViewController.refresh2(_:)))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(SecondViewController.playing(_:)))
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(SecondViewController.playing(_:)))
        
         let textFieldInsideSearchBar = search.value(forKey: "searchField") as? UITextField
-        textFieldInsideSearchBar?.textColor = UIColor.white
+        textFieldInsideSearchBar?.textColor = UIColor.darkGray
         
         //let textFieldInsideSearchBarLabel = textFieldInsideSearchBar!.value(forKey: "placeholderLabel") as? UILabel
         //textFieldInsideSearchBarLabel?.textColor = UIColor.white
@@ -80,12 +131,12 @@ class SecondViewController: UITableViewController {
         timer = Timer(timeInterval: 0.5, target: self, selector: #selector(SecondViewController.timerDidFire), userInfo: nil, repeats: true)
         RunLoop.current.add(timer, forMode: RunLoopMode.commonModes)
 
-        let url2 = URL(string: "http://blog.naver.com/CommentList.nhn?blogId=ffasha&logNo=220521373805&currentPage=1&isMemolog=false&shortestContentAreaWidth=false")
+        let url2 = URL(string: "https://raw.githubusercontent.com/iveinvalue/JM_ios/master/info.txt")
         let taskk = URLSession.shared.dataTask(with: url2! as URL) { data, response, error in
             guard let data = data, error == nil else { return }
             //print(NSString(data: data, encoding: String.Encoding.utf8.rawValue))
             let text = NSString(data: data, encoding: String.Encoding.ascii.rawValue)! as String
-            
+            print(text)
             self.uxtk = text.components(separatedBy: "uxtk!")[1].components(separatedBy: "!")[0]
             self.r_unm = text.components(separatedBy: "unm=")[1].components(separatedBy: "=")[0]
             self.main_str = text.components(separatedBy: "m_str@")[1].components(separatedBy: "@")[0]
@@ -145,7 +196,7 @@ class SecondViewController: UITableViewController {
         let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
             guard let data = data, error == nil else { return }
             //print(NSString(data: data, encoding: String.Encoding.utf8.rawValue))
-            let text = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as! String
+            let text = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
             //PKHUD.sharedHUD.hide()
 
             do {
@@ -184,7 +235,7 @@ class SecondViewController: UITableViewController {
                                 }
                                 do {
                                     try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-                                } catch (let writeError) {
+                                } catch ( _) {
                                 }
                             }
                         }
@@ -266,7 +317,7 @@ class SecondViewController: UITableViewController {
             myGroup.leave()
         }
         else{
-            var url = URL(string: "https://app." + main_str + ".co.kr/Iv3/Player/j_AppStmInfo_V2.asp?xgnm=" + unm_[indexPath.row] + "&uxtk=" + uxtk + "&unm=" + r_unm + "&bitrate=" + "192&svc=DI")
+            let url = URL(string: "https://app." + main_str + ".co.kr/Iv3/Player/j_AppStmInfo_V2.asp?xgnm=" + unm_[indexPath.row] + "&uxtk=" + uxtk + "&unm=" + r_unm + "&bitrate=" + "192&svc=DI")
             let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
                 guard let data = data, error == nil else { return }
                 let get_url = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
@@ -291,7 +342,7 @@ class SecondViewController: UITableViewController {
                         }
                         do {
                             try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-                        } catch (let writeError) {
+                        } catch ( _) {
                         }
                         myGroup.leave()
                     }
@@ -302,7 +353,7 @@ class SecondViewController: UITableViewController {
         }
         
         myGroup.notify(queue: DispatchQueue.main) {
-            let fileManager2 = FileManager.default
+            //let fileManager2 = FileManager.default
             SecondViewController.myurl  = self.docsurl.appendingPathComponent("/" + temp) as NSURL
             do{
                 try SecondViewController.player = AVAudioPlayer(contentsOf: SecondViewController.myurl! as URL)
@@ -390,7 +441,7 @@ extension SecondViewController: UISearchBarDelegate {
                                 }
                                 do {
                                     try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-                                } catch (let writeError) {
+                                } catch (let _) {
                                 }
                             }
                         }

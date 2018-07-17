@@ -14,6 +14,7 @@ import CircularSlider
 import SwiftMessages
 import NYAlertViewController
 import AudioToolbox
+import DTZFloatingActionButton
 
 var is_touching = 0
 var is_touching_3d = 0
@@ -64,17 +65,22 @@ class main_music: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool){
+        //UIApplication.shared.statusBarStyle = .lightContent
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
         navigationController?.navigationBar.tintColor = UIColor.red
+        //UINavigationBar.appearance().barStyle = .default
+        //UIApplication.shared.statusBarStyle = .default
+        DTZFABManager.shared.hide()
     }
     
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
 //http://dn.genie.co.kr/app/purchase/get_msl.asp?path=a&songid=87463771&callback=jQuery19106672317580988207_1509165099060&_=1509165099061"
        
         
@@ -94,7 +100,7 @@ class main_music: UIViewController {
             }
         }
         
-        rotateView(view: self.artwork)
+        //rotateView(view: self.artwork)
         
         artwork.layer.borderWidth = 1
         artwork.layer.masksToBounds = false

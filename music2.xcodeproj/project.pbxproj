@@ -10,6 +10,7 @@
 		320E670EA6A990C7CF658B77 /* Pods_music2Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94684D62CAD3FFCD17486F87 /* Pods_music2Tests.framework */; };
 		436019C18187083A7D65FC20 /* Pods_music2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3E4622DA67D25D980BDD5F6 /* Pods_music2.framework */; };
 		CE1569A21FA33A36002E83AE /* NYAlertViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1569A31FA33A36002E83AE /* NYAlertViewController.framework */; };
+		CE26A0EF20F21F4600D94653 /* JPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE26A0EE20F21F4600D94653 /* JPlayer.swift */; };
 		CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */; };
 		CE76DD601F889F8F00B4441B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD5F1F889F8F00B4441B /* FirstViewController.swift */; };
 		CE76DD621F889F8F00B4441B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD611F889F8F00B4441B /* SecondViewController.swift */; };
@@ -19,6 +20,7 @@
 		CE76DD751F889F8F00B4441B /* music2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD741F889F8F00B4441B /* music2Tests.swift */; };
 		CE76DD801F889F8F00B4441B /* music2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD7F1F889F8F00B4441B /* music2UITests.swift */; };
 		CE76DD8E1F889FFE00B4441B /* FirstCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD8D1F889FFE00B4441B /* FirstCustomCell.swift */; };
+		CED2A6D320F21838000D3CEE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED2A6D220F21838000D3CEE /* MediaPlayer.framework */; };
 		CEF1A2A71FA311E800A595CF /* CircularSlider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1A2A81FA311E800A595CF /* CircularSlider.framework */; };
 		CEF1A2A91FA32D3200A595CF /* SwiftMessages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1A2AA1FA32D3200A595CF /* SwiftMessages.framework */; };
 		CEF1B1561F8A349200407F67 /* main_music.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF1B1551F8A349200407F67 /* main_music.swift */; };
@@ -65,6 +67,7 @@
 		94684D62CAD3FFCD17486F87 /* Pods_music2Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_music2Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B31B6939C1FAAFFF15B1BE85 /* Pods-music2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-music2Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-music2Tests/Pods-music2Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CE1569A31FA33A36002E83AE /* NYAlertViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NYAlertViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE26A0EE20F21F4600D94653 /* JPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JPlayer.swift; sourceTree = "<group>"; };
 		CE3762471FBDB8EE00DD38D8 /* MYTableViewIndex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MYTableViewIndex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD5A1F889F8F00B4441B /* music2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = music2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +87,7 @@
 		CE7E23B31FA727A100EFE52A /* PullToBounce.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PullToBounce.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7E23B51FA7293F00EFE52A /* GearRefreshControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GearRefreshControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE83CF2F1FAE25DF00790466 /* PKHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PKHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED2A6D220F21838000D3CEE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CEF1A2A81FA311E800A595CF /* CircularSlider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CircularSlider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF1A2AA1FA32D3200A595CF /* SwiftMessages.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftMessages.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF1B1551F8A349200407F67 /* main_music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main_music.swift; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED2A6D320F21838000D3CEE /* MediaPlayer.framework in Frameworks */,
 				CE1569A21FA33A36002E83AE /* NYAlertViewController.framework in Frameworks */,
 				CEF1A2A91FA32D3200A595CF /* SwiftMessages.framework in Frameworks */,
 				CEF1A2A71FA311E800A595CF /* CircularSlider.framework in Frameworks */,
@@ -160,6 +165,7 @@
 				CE76DD681F889F8F00B4441B /* LaunchScreen.storyboard */,
 				CE76DD6B1F889F8F00B4441B /* Info.plist */,
 				CEF1B1551F8A349200407F67 /* main_music.swift */,
+				CE26A0EE20F21F4600D94653 /* JPlayer.swift */,
 			);
 			path = music2;
 			sourceTree = "<group>";
@@ -185,6 +191,7 @@
 		CEF1B1581F8A430800407F67 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CED2A6D220F21838000D3CEE /* MediaPlayer.framework */,
 				CE3762471FBDB8EE00DD38D8 /* MYTableViewIndex.framework */,
 				CE83CF2F1FAE25DF00790466 /* PKHUD.framework */,
 				CE7E23B51FA7293F00EFE52A /* GearRefreshControl.framework */,
@@ -489,12 +496,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-music2/Pods-music2-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CircularSlider/CircularSlider.framework",
+				"${BUILT_PRODUCTS_DIR}/DTZFloatingActionButton/DTZFloatingActionButton.framework",
 				"${BUILT_PRODUCTS_DIR}/NYAlertViewController/NYAlertViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CircularSlider.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTZFloatingActionButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NYAlertViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 			);
@@ -529,6 +538,7 @@
 				CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */,
 				CE76DD601F889F8F00B4441B /* FirstViewController.swift in Sources */,
 				CE76DD8E1F889FFE00B4441B /* FirstCustomCell.swift in Sources */,
+				CE26A0EF20F21F4600D94653 /* JPlayer.swift in Sources */,
 				CEF1B1561F8A349200407F67 /* main_music.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -697,6 +707,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = music2/music2.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = V8NQD3S88F;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -707,6 +719,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jungcode.music2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -717,6 +730,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = music2/music2.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = V8NQD3S88F;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -727,6 +742,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jungcode.music2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
