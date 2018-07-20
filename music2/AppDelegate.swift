@@ -18,17 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let audioSession = AVAudioSession.sharedInstance()
-        let commandCenter = MPRemoteCommandCenter.shared()
-        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
-        let notificationCenter = NotificationCenter.default
-        //let bundle = Bundle.main
         
-        self.player = JPlayer(dependencies: (audioSession, commandCenter, nowPlayingInfoCenter, notificationCenter))
-        
-        //self.window = UIWindow(frame: UIScreen.main.bounds)
-        //self.window!.makeKeyAndVisible()
-        //self.window!.rootViewController = PlaylistViewController(dependencies: (self.player, bundle, notificationCenter))
+       
         
         return true
     }

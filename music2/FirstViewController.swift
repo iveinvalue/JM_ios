@@ -19,6 +19,8 @@ class save_cell: UITableViewCell {
 }
 
 class FirstViewController: UITableViewController {
+
+    
     var sections : [(index: Int, length :Int, title: String)] = Array()
     //var gearRefreshControl: GearRefreshControl!
     var docsurl : URL! = nil
@@ -125,10 +127,12 @@ class FirstViewController: UITableViewController {
         
         mp3FileNames.sort()
         //mp3FileNames.sort { $0 < $1 }
+        //print(mp3FileNames)
         
         var index = 0;
         if mp3FileNames.count > 0 {
             for i in 0...mp3FileNames.count - 1{
+                print("test " + mp3FileNames[i])
                 let commonprefix_ = mp3FileNames[i].commonPrefix(with: mp3FileNames[index], options: .caseInsensitive)
                 if (commonprefix_.count == 0 ) {
                     let string = mp3FileNames[index];
@@ -138,9 +142,19 @@ class FirstViewController: UITableViewController {
                     let newSection = (index: index, length: i - index, title: title)
                     //if !(sections.contains {$2.contains(title)})
                     sections.append(newSection)
+                    print(sections)
                     index = i;
                 }
+                print("------------")
             }
+            let string = mp3FileNames[index];
+            let firstCharacter = string[string.startIndex]
+            //print(mp3FileNames)
+            let title = "\(firstCharacter)"
+            let newSection = (index: index, length: mp3FileNames.count - index, title: title)
+            //if !(sections.contains {$2.contains(title)})
+            sections.append(newSection)
+
         }
         
         self.save_table.reloadData()
@@ -270,6 +284,7 @@ class FirstViewController: UITableViewController {
        SecondViewController.myurl = myurl
         
         do{
+            
             try SecondViewController.player = AVAudioPlayer(contentsOf: SecondViewController.myurl! as URL)
             //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             //try AVAudioSession.sharedInstance().setActive(true)
@@ -277,6 +292,9 @@ class FirstViewController: UITableViewController {
             SecondViewController.player.volume = 1.0
             //SecondViewController.player.delegate = self
             SecondViewController.player.play()
+            
+           
+            
         }
         catch{}
         
