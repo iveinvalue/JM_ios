@@ -19,7 +19,10 @@ let myGroup = DispatchGroup()
 let myGroup2 = DispatchGroup()
 
 
-class SecondViewController: UITableViewController {
+class SecondViewController: UITableViewController , UIDocumentInteractionControllerDelegate{
+    
+    
+    var docController:UIDocumentInteractionController!
     
     @IBOutlet weak var tableview: UITableView!
     @IBOutlet weak var search: UISearchBar!
@@ -92,11 +95,28 @@ class SecondViewController: UITableViewController {
         }
     }
     
+    func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
+        return self
+    }
+    func documentInteractionControllerDidEndPreview(controller: UIDocumentInteractionController) {
+        docController = nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         checkMediaAccess()
 
+       
+        
+        let fileManager2 = FileManager.default
+        docsurl = try! fileManager2.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        
+
+        /*
+        
+        */
+        
         //navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         //navigationController?.navigationBar.shadowImage = UIImage()
         
@@ -118,8 +138,7 @@ class SecondViewController: UITableViewController {
         self.refreshControl = gearRefreshControl
         //gearRefreshControl.gearTintColor = .white*/
         
-        let fileManager2 = FileManager.default
-        docsurl = try! fileManager2.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+       
         
         //let leftButton: UIBarButtonItem = UIBarButtonItem(title: "재생중", style: UIBarButtonItemStyle.done, target: self, action: #selector(SecondViewController.playing(_:)))
        // self.navigationItem.rightBarButtonItem = leftButton
@@ -143,6 +162,7 @@ class SecondViewController: UITableViewController {
         }
         taskk.resume()
 
+        /*
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: .mixWithOthers)
             print("AVAudioSession Category Playback OK")
@@ -154,7 +174,7 @@ class SecondViewController: UITableViewController {
             }
         } catch {
             print(error)
-        }
+        }*/
         
         let dataPath = docsurl.appendingPathComponent("tmp")
         
@@ -357,18 +377,23 @@ class SecondViewController: UITableViewController {
             SecondViewController.myurl  = self.docsurl.appendingPathComponent("/" + temp) as NSURL
             do{
                 try SecondViewController.player = AVAudioPlayer(contentsOf: SecondViewController.myurl! as URL)
+
                 //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
                 //try AVAudioSession.sharedInstance().setActive(true)
+            
                 SecondViewController.player.prepareToPlay()
                 SecondViewController.player.volume = 1.0
                 //SecondViewController.player.delegate = self
+                /*
                 let session = AVAudioSession.sharedInstance()
                 do{
                     try session.setCategory(AVAudioSessionCategoryPlayback)
                 }
                 catch{
-                }
+                }*/
                 SecondViewController.player.play()
+                
+               
             }
             catch{}
             let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "main_music") as! main_music

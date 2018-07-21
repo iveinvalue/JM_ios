@@ -10,8 +10,8 @@
 		320E670EA6A990C7CF658B77 /* Pods_music2Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94684D62CAD3FFCD17486F87 /* Pods_music2Tests.framework */; };
 		436019C18187083A7D65FC20 /* Pods_music2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3E4622DA67D25D980BDD5F6 /* Pods_music2.framework */; };
 		CE1569A21FA33A36002E83AE /* NYAlertViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1569A31FA33A36002E83AE /* NYAlertViewController.framework */; };
-		CE26A0EF20F21F4600D94653 /* JPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE26A0EE20F21F4600D94653 /* JPlayer.swift */; };
-		CE2CB5C12101FF9500D6FD8A /* SwiftyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2CB5C02101FF9500D6FD8A /* SwiftyTimer.swift */; };
+		CE2CB5C721033EAE00D6FD8A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE2CB5C621033EAE00D6FD8A /* AudioToolbox.framework */; };
+		CE2CB5C921033EF300D6FD8A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE2CB5C821033EF300D6FD8A /* AVFoundation.framework */; };
 		CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */; };
 		CE76DD601F889F8F00B4441B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD5F1F889F8F00B4441B /* FirstViewController.swift */; };
 		CE76DD621F889F8F00B4441B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD611F889F8F00B4441B /* SecondViewController.swift */; };
@@ -25,7 +25,6 @@
 		CEF1A2A71FA311E800A595CF /* CircularSlider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1A2A81FA311E800A595CF /* CircularSlider.framework */; };
 		CEF1A2A91FA32D3200A595CF /* SwiftMessages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1A2AA1FA32D3200A595CF /* SwiftMessages.framework */; };
 		CEF1B1561F8A349200407F67 /* main_music.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF1B1551F8A349200407F67 /* main_music.swift */; };
-		CEF1B15A1F8A430800407F67 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF1B1591F8A430800407F67 /* AudioToolbox.framework */; };
 		D80BD1D327AEFAD6429B2524 /* Pods_music2UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B8D822F028E4A4B7E8A85AB /* Pods_music2UITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,8 +67,8 @@
 		94684D62CAD3FFCD17486F87 /* Pods_music2Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_music2Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B31B6939C1FAAFFF15B1BE85 /* Pods-music2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-music2Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-music2Tests/Pods-music2Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CE1569A31FA33A36002E83AE /* NYAlertViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NYAlertViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE26A0EE20F21F4600D94653 /* JPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JPlayer.swift; sourceTree = "<group>"; };
-		CE2CB5C02101FF9500D6FD8A /* SwiftyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyTimer.swift; sourceTree = "<group>"; };
+		CE2CB5C621033EAE00D6FD8A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		CE2CB5C821033EF300D6FD8A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CE3762471FBDB8EE00DD38D8 /* MYTableViewIndex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MYTableViewIndex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD5A1F889F8F00B4441B /* music2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = music2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,7 +93,6 @@
 		CEF1A2AA1FA32D3200A595CF /* SwiftMessages.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftMessages.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF1B1551F8A349200407F67 /* main_music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main_music.swift; sourceTree = "<group>"; };
 		CEF1B1571F8A430800407F67 /* music2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = music2.entitlements; sourceTree = "<group>"; };
-		CEF1B1591F8A430800407F67 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E3E4622DA67D25D980BDD5F6 /* Pods_music2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_music2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8CE32516568A2776580119B /* Pods-music2UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-music2UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-music2UITests/Pods-music2UITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,12 +102,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE2CB5C921033EF300D6FD8A /* AVFoundation.framework in Frameworks */,
 				CED2A6D320F21838000D3CEE /* MediaPlayer.framework in Frameworks */,
 				CE1569A21FA33A36002E83AE /* NYAlertViewController.framework in Frameworks */,
 				CEF1A2A91FA32D3200A595CF /* SwiftMessages.framework in Frameworks */,
 				CEF1A2A71FA311E800A595CF /* CircularSlider.framework in Frameworks */,
-				CEF1B15A1F8A430800407F67 /* AudioToolbox.framework in Frameworks */,
 				436019C18187083A7D65FC20 /* Pods_music2.framework in Frameworks */,
+				CE2CB5C721033EAE00D6FD8A /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,12 +162,10 @@
 				CE76DD5F1F889F8F00B4441B /* FirstViewController.swift */,
 				CE76DD611F889F8F00B4441B /* SecondViewController.swift */,
 				CE76DD631F889F8F00B4441B /* Main.storyboard */,
-				CE2CB5C02101FF9500D6FD8A /* SwiftyTimer.swift */,
 				CE76DD661F889F8F00B4441B /* Assets.xcassets */,
 				CE76DD681F889F8F00B4441B /* LaunchScreen.storyboard */,
 				CE76DD6B1F889F8F00B4441B /* Info.plist */,
 				CEF1B1551F8A349200407F67 /* main_music.swift */,
-				CE26A0EE20F21F4600D94653 /* JPlayer.swift */,
 			);
 			path = music2;
 			sourceTree = "<group>";
@@ -194,6 +191,8 @@
 		CEF1B1581F8A430800407F67 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE2CB5C821033EF300D6FD8A /* AVFoundation.framework */,
+				CE2CB5C621033EAE00D6FD8A /* AudioToolbox.framework */,
 				CED2A6D220F21838000D3CEE /* MediaPlayer.framework */,
 				CE3762471FBDB8EE00DD38D8 /* MYTableViewIndex.framework */,
 				CE83CF2F1FAE25DF00790466 /* PKHUD.framework */,
@@ -202,7 +201,6 @@
 				CE1569A31FA33A36002E83AE /* NYAlertViewController.framework */,
 				CEF1A2AA1FA32D3200A595CF /* SwiftMessages.framework */,
 				CEF1A2A81FA311E800A595CF /* CircularSlider.framework */,
-				CEF1B1591F8A430800407F67 /* AudioToolbox.framework */,
 				E3E4622DA67D25D980BDD5F6 /* Pods_music2.framework */,
 				94684D62CAD3FFCD17486F87 /* Pods_music2Tests.framework */,
 				0B8D822F028E4A4B7E8A85AB /* Pods_music2UITests.framework */,
@@ -305,12 +303,15 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
 							com.apple.InterAppAudio = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -540,8 +541,6 @@
 				CE76DD621F889F8F00B4441B /* SecondViewController.swift in Sources */,
 				CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */,
 				CE76DD601F889F8F00B4441B /* FirstViewController.swift in Sources */,
-				CE2CB5C12101FF9500D6FD8A /* SwiftyTimer.swift in Sources */,
-				CE26A0EF20F21F4600D94653 /* JPlayer.swift in Sources */,
 				CEF1B1561F8A349200407F67 /* main_music.swift in Sources */,
 				CE994E0520FE10CE002F833D /* FirstCustomCell.swift in Sources */,
 			);

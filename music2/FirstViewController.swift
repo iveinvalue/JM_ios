@@ -20,6 +20,7 @@ class save_cell: UITableViewCell {
 
 class FirstViewController: UITableViewController {
 
+
     
     var sections : [(index: Int, length :Int, title: String)] = Array()
     //var gearRefreshControl: GearRefreshControl!
@@ -54,6 +55,9 @@ class FirstViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        
+        
         //let query = MPMediaQuery()
         //print(query.items![0].title)
         //MPMusicPlayerController.systemMusicPlayer().setQueue(with: MPMediaQuery.songs())
@@ -286,14 +290,16 @@ class FirstViewController: UITableViewController {
         do{
             
             try SecondViewController.player = AVAudioPlayer(contentsOf: SecondViewController.myurl! as URL)
-            //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            //try AVAudioSession.sharedInstance().setActive(true)
+            
             SecondViewController.player.prepareToPlay()
             SecondViewController.player.volume = 1.0
             //SecondViewController.player.delegate = self
             SecondViewController.player.play()
             
-           
+            //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            //try AVAudioSession.sharedInstance().setActive(true)
+            
+            
             
         }
         catch{}

@@ -20,8 +20,11 @@ var is_touching = 0
 var is_touching_3d = 0
 var is_moved = 0
 
-class main_music: UIViewController {
+class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
 
+   
+
+    var docController:UIDocumentInteractionController!
     var lyric_time = ""
     var lyric = ""
     var timer:Timer!
@@ -36,6 +39,41 @@ class main_music: UIViewController {
     @IBOutlet weak var lyric1: UILabel!
     @IBOutlet weak var lyric2: UILabel!
     
+    func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
+        return self
+    }
+    func documentInteractionControllerDidEndPreview(controller: UIDocumentInteractionController) {
+        docController = nil
+    }
+    
+    
+    @IBAction func share(_ sender: Any) {
+        let fileManager2 = FileManager.default
+        let docsurl = try! fileManager2.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        
+        let destinationFileUrl = docsurl.appendingPathComponent(tittle.text! + " - " + artist.text! + ".mp3")
+        
+        
+        if fileManager2.fileExists(atPath: destinationFileUrl.path){
+            docController = UIDocumentInteractionController(url: destinationFileUrl)
+            
+            docController.name = NSURL(fileURLWithPath: destinationFileUrl.path).lastPathComponent
+            
+            docController.delegate = self
+            
+            docController.presentPreview(animated: true)
+            docController.presentOpenInMenu(from: self.view.frame, in: self.view, animated: true)
+            
+            /*
+             let documento = NSData(contentsOfFile: destinationFileUrl.path)
+             let activityViewController: UIActivityViewController = UIActivityViewController(activityItems: [documento!], applicationActivities: nil)
+             activityViewController.popoverPresentationController?.sourceView=self.view
+             present(activityViewController, animated: true, completion: nil)*/
+        }
+        else {
+            print("document was not found")
+        }
+    }
     @IBAction func lyric(_ sender: Any) {
         let alertViewController = NYAlertViewController()
         // Set a title and message
@@ -76,11 +114,12 @@ class main_music: UIViewController {
         DTZFABManager.shared.hide()
     }
     
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
+        //AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, error: nil)
 //http://dn.genie.co.kr/app/purchase/get_msl.asp?path=a&songid=87463771&callback=jQuery19106672317580988207_1509165099060&_=1509165099061"
        
         
@@ -117,6 +156,7 @@ class main_music: UIViewController {
         
         //print(lyricsText)
         
+
         var t_title = ""
         var a_artist = ""
         let metadataList = playerItem.asset.commonMetadata
@@ -142,14 +182,51 @@ class main_music: UIViewController {
                     backgroundImage.image = blurImage(image: audioImage)
                     self.view.insertSubview(backgroundImage, at: 0)
                     
-                   
+                 
+                    UIApplication.shared.beginReceivingRemoteControlEvents()
+                    
+                    let image = audioImage
+                    let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in
+                        return image
+                    }
+                    
+                    let nowPlayingInfo2: [String: Any] = [
+                        MPMediaItemPropertyArtist: a_artist,
+                        MPMediaItemPropertyTitle: t_title,
+                        MPMediaItemPropertyArtwork: mediaArtwork,
+                        MPNowPlayingInfoPropertyIsLiveStream: false
+                    ]
+                    
+                    MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo2
+                    
+                    let commandCenter = MPRemoteCommandCenter.shared()
+                    
+                    commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+                        //Update your button here for the pause command
+                        SecondViewController.player.pause()
+                        return .success
+                    }
+                    
+                    commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+                        //Update your button here for the play command
+                        SecondViewController.player.play()
+                        return .success
+                    }
+                    
                     //lyric1.textColor = blurImage(image: audioImage)?.averageColor()
                 }
             }
             //print(item.commonKey)
         }
         
-       
+    
+        
+        /*
+        let time = DispatchTime.now() + .seconds(0)
+        DispatchQueue.main.asyncAfter(deadline: time) {
+            
+        }*/
+        
         
         
         let str = (t_title + " " + a_artist).addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
