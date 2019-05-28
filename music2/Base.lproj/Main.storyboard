@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -118,7 +118,7 @@
             </objects>
             <point key="canvasLocation" x="-122" y="1016"/>
         </scene>
-        <!--음악-->
+        <!--JM 플레이어-->
         <scene sceneID="8cV-TO-edm">
             <objects>
                 <tableViewController id="xOv-5b-yep" customClass="SecondViewController" customModule="music2" customModuleProvider="target" sceneMemberID="viewController">
@@ -213,7 +213,7 @@
                             <outlet property="delegate" destination="xOv-5b-yep" id="aji-fe-EOv"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="음악" id="ayL-0r-Xvs"/>
+                    <navigationItem key="navigationItem" title="JM 플레이어" id="ayL-0r-Xvs"/>
                     <connections>
                         <outlet property="search" destination="hLV-6l-20P" id="3Dq-QX-xhX"/>
                         <outlet property="tableview" destination="UCa-Kk-xMu" id="1aY-J8-Xia"/>
@@ -470,7 +470,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="down" width="21" height="21"/>
-        <image name="second" width="21" height="21"/>
+        <image name="down" width="51.200000762939453" height="51.200000762939453"/>
+        <image name="second" width="51.200000762939453" height="51.200000762939453"/>
     </resources>
 </document>
