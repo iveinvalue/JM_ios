@@ -138,7 +138,7 @@
                             </scopeButtonTitles>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FirstCustomCell" rowHeight="60" id="Ufd-cx-R4B" customClass="ChartCell" customModule="music2" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChartCell" rowHeight="60" id="Ufd-cx-R4B" customClass="ChartCell" customModule="music2" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="84" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ufd-cx-R4B" id="Got-H2-Nmr">

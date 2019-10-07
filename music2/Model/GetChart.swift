@@ -17,6 +17,7 @@ class GetChart{
         
         RequestHTTP(url: turl, completion: { text in
             do {
+                //print(text)
                 var realtext = text
                 realtext = realtext.replacingOccurrences(of: "%28", with: "(")
                 realtext = realtext.replacingOccurrences(of: "%29", with: ")")
@@ -29,6 +30,7 @@ class GetChart{
                 GetChart.artist_ = []
                 GetChart.imageurl_ = []
                 GetChart.unm_ = []
+                //print(text)
                 
                 for i in 1...100 {
                     GetChart.tittle_.append((realtext.components(separatedBy: "SONG_NAME\":\"")[i].components(separatedBy: "\"")[0]))

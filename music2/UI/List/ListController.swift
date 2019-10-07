@@ -13,9 +13,11 @@ import SwiftMessages
 import MediaPlayer
 
 class save_cell: UITableViewCell {
+    
     @IBOutlet weak var artist: UILabel!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var image_: UIImageView!
+    
 }
 
 class ListController: UITableViewController {
@@ -87,7 +89,7 @@ class ListController: UITableViewController {
         DTZFABManager.shared.button().plusColor = UIColor.white
         DTZFABManager.shared.show()
         
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(FirstViewController.refresh(_:)))
+        //navigationItem.leftBarButtonItem = UIBbarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(FirstViewController.refresh(_:)))
         //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(FirstViewController.playing(_:)))
         
         /*
