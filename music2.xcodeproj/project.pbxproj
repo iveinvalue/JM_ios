@@ -21,6 +21,9 @@
 		CE542A97234B025500307AAF /* GetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542A96234B025500307AAF /* GetInfo.swift */; };
 		CE542A99234B033700307AAF /* Docsurl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542A98234B033700307AAF /* Docsurl.swift */; };
 		CE542A9B234B0DB300307AAF /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542A9A234B0DB300307AAF /* Data.swift */; };
+		CE542A9D234B18E600307AAF /* ListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542A9C234B18E600307AAF /* ListPresenter.swift */; };
+		CE542A9F234B319900307AAF /* Mp3File.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542A9E234B319900307AAF /* Mp3File.swift */; };
+		CE542AA1234B35F900307AAF /* SwiftMsg.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542AA0234B35F900307AAF /* SwiftMsg.swift */; };
 		CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */; };
 		CE76DD601F889F8F00B4441B /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD5F1F889F8F00B4441B /* ListController.swift */; };
 		CE76DD621F889F8F00B4441B /* ChartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD611F889F8F00B4441B /* ChartController.swift */; };
@@ -87,6 +90,9 @@
 		CE542A96234B025500307AAF /* GetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInfo.swift; sourceTree = "<group>"; };
 		CE542A98234B033700307AAF /* Docsurl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Docsurl.swift; sourceTree = "<group>"; };
 		CE542A9A234B0DB300307AAF /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		CE542A9C234B18E600307AAF /* ListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPresenter.swift; sourceTree = "<group>"; };
+		CE542A9E234B319900307AAF /* Mp3File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3File.swift; sourceTree = "<group>"; };
+		CE542AA0234B35F900307AAF /* SwiftMsg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMsg.swift; sourceTree = "<group>"; };
 		CE76DD5A1F889F8F00B4441B /* music2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = music2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE76DD5F1F889F8F00B4441B /* ListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListController.swift; sourceTree = "<group>"; };
@@ -165,6 +171,7 @@
 				CE542A96234B025500307AAF /* GetInfo.swift */,
 				CE542A98234B033700307AAF /* Docsurl.swift */,
 				CE542A9A234B0DB300307AAF /* Data.swift */,
+				CE542A9E234B319900307AAF /* Mp3File.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -175,6 +182,7 @@
 				CE178D68234AF13C000C5CD9 /* UIImageViewExtension.swift */,
 				CE178D6A234AF16B000C5CD9 /* StringExtension.swift */,
 				CE542A94234AFE7700307AAF /* RequestHTTP.swift */,
+				CE542AA0234B35F900307AAF /* SwiftMsg.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -192,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				CE76DD5F1F889F8F00B4441B /* ListController.swift */,
+				CE542A9C234B18E600307AAF /* ListPresenter.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -530,13 +539,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE542A9D234B18E600307AAF /* ListPresenter.swift in Sources */,
 				CE542A99234B033700307AAF /* Docsurl.swift in Sources */,
 				CE76DD621F889F8F00B4441B /* ChartController.swift in Sources */,
+				CE542AA1234B35F900307AAF /* SwiftMsg.swift in Sources */,
 				CE178D6B234AF16B000C5CD9 /* StringExtension.swift in Sources */,
 				CE542A93234AFE0800307AAF /* GetCertification.swift in Sources */,
 				CE542A97234B025500307AAF /* GetInfo.swift in Sources */,
 				CE178D6D234AF9B7000C5CD9 /* ChartPresenter.swift in Sources */,
 				CE542A91234AFD7E00307AAF /* GetChart.swift in Sources */,
+				CE542A9F234B319900307AAF /* Mp3File.swift in Sources */,
 				CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */,
 				CE542A9B234B0DB300307AAF /* Data.swift in Sources */,
 				CE178D69234AF13C000C5CD9 /* UIImageViewExtension.swift in Sources */,

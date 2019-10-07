@@ -39,17 +39,6 @@ class ChartPresenter {
         mView = nil
     }
     
-    func load(fileName: String) -> UIImage? {
-        let fileURL = Docsurl.docsurl.appendingPathComponent(fileName)
-        do {
-            let imageData = try Data(contentsOf: fileURL)
-            return UIImage(data: imageData)
-        } catch {
-            //print("Error loading image : \(error)")
-        }
-        return nil
-    }
-    
     func checkMediaAccess() {
         let authorizationStatus = MPMediaLibrary.authorizationStatus()
         switch authorizationStatus {
@@ -69,7 +58,7 @@ class ChartPresenter {
     }
 
     func CheckPlaying(){
-        if !( ChartController.myurl == nil){
+        if !(myurl == nil){
             mView?.movePlayer()
         }else{
             mView?.MessageUp(str: "재생중인 음악이 없습니다.")
@@ -99,8 +88,8 @@ class ChartPresenter {
     }
     
     func tableClick(index: Int){
-        if ChartController.player != nil && ChartController.player.rate != 0 {
-            ChartController.player.pause()
+        if player != nil && player.rate != 0 {
+            player.pause()
         }
         
         myGroup.enter()
@@ -116,12 +105,12 @@ class ChartPresenter {
         }
         
         myGroup.notify(queue: DispatchQueue.main) {
-            ChartController.myurl  = Docsurl.docsurl.appendingPathComponent("/" + temp) as NSURL
+            myurl  = Docsurl.docsurl.appendingPathComponent("/" + temp) as NSURL
             do{
-                try ChartController.player = AVAudioPlayer(contentsOf: ChartController.myurl! as URL)
-                ChartController.player.prepareToPlay()
-                ChartController.player.volume = 1.0
-                ChartController.player.play()
+                try player = AVAudioPlayer(contentsOf: myurl! as URL)
+                player.prepareToPlay()
+                player.volume = 1.0
+                player.play()
             }
             catch{}
             self.mView?.movePlayer()

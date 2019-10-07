@@ -7,12 +7,8 @@
 //
 
 import UIKit
-import AudioToolbox
 import Foundation
-import AVFoundation
-import MediaPlayer
 import DTZFloatingActionButton
-import SwiftMessages
 
 protocol ChartView: NSObjectProtocol {
     
@@ -35,10 +31,6 @@ class ChartCell: UITableViewCell {
 class ChartController: UITableViewController {
 
     var mPresenter = ChartPresenter()
-
-    static var url : URL!
-    static var myurl : NSURL!
-    static var player:AVAudioPlayer!
     
     @IBOutlet weak var tableview: UITableView!
     @IBOutlet weak var search: UISearchBar!
@@ -133,16 +125,7 @@ extension ChartController: ChartView {
     }
     
     func MessageUp(str: String){
-        var config = SwiftMessages.Config()
-        config.duration = .seconds(seconds: 0.6)
-        config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar)
-        
-        let view = MessageView.viewFromNib(layout: .statusLine)
-        view.configureTheme(.error)
-        view.configureDropShadow()
-        let iconText = [""].randomElement()!
-        view.configureContent(title: "", body: str, iconText: iconText)
-        SwiftMessages.show(config: config, view: view)
+        SwiftMsg(str: str)
     }
     
     func DTZFABManage(){

@@ -22,8 +22,6 @@ var is_moved = 0
 
 class PlayerController: UIViewController , UIDocumentInteractionControllerDelegate{
 
-   
-
     var docController:UIDocumentInteractionController!
     var lyric_time = ""
     var lyric = ""
@@ -147,9 +145,9 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
         artwork.layer.cornerRadius = artwork.frame.height/2
         artwork.clipsToBounds = true
 
-        let playerItem = AVPlayerItem(url: ChartController.myurl! as URL )
+        let playerItem = AVPlayerItem(url: myurl! as URL )
         
-        let songAsset = AVURLAsset(url: ChartController.myurl! as URL, options: nil)
+        let songAsset = AVURLAsset(url: myurl! as URL, options: nil)
         if !(songAsset.lyrics == nil){
             lyric =  songAsset.lyrics!
         }
@@ -203,13 +201,13 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
                     
                     commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
                         //Update your button here for the pause command
-                        ChartController.player.pause()
+                        player.pause()
                         return .success
                     }
                     
                     commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
                         //Update your button here for the play command
-                        ChartController.player.play()
+                        player.play()
                         return .success
                     }
                     
@@ -259,12 +257,12 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
 
         var end_time_m = ""
         var end_time_s = ""
-        if(Int(ChartController.player.duration) < 60){
+        if(Int(player.duration) < 60){
             end_time_m = "0"
-            end_time_s = Int(ChartController.player.duration).description
+            end_time_s = Int(player.duration).description
         }else{
-            end_time_m = (Int(ChartController.player.duration) / Int(60)).description
-            end_time_s = (Int(ChartController.player.duration) % Int(60)).description
+            end_time_m = (Int(player.duration) / Int(60)).description
+            end_time_s = (Int(player.duration) % Int(60)).description
         }
         if(Int(end_time_s)! < 10){
             end_time_s = "0" + end_time_s
@@ -274,7 +272,7 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
     
     
     @objc func timerDidFire(){
-        let time_change = Int(Float(ChartController.player.currentTime) * 1000 )
+        let time_change = Int(Float(player.currentTime) * 1000 )
         let arr_time = lyric_time.components(separatedBy: "\",\"")
         if arr_time.count > 5{
             for i in 1...arr_time.count - 1{
@@ -287,11 +285,11 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
         }
         
         //print(SecondViewController.player.currentTime)
-        let tmp_current = Int(ChartController.player.currentTime).description
+        let tmp_current = Int(player.currentTime).description
         var start_time_m = ""
         var start_time_s = ""
 
-        if(Int(ChartController.player.currentTime) < 60){
+        if(Int(player.currentTime) < 60){
             start_time_m = "0"
             start_time_s = tmp_current
         }else{
@@ -305,7 +303,7 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
         start.text = start_time_m + ":" + start_time_s
         
          if is_touching == 0{
-            let progress = ChartController.player.currentTime / ChartController.player.duration * 100
+            let progress = player.currentTime / player.duration * 100
             slider_c.setValue(Float(progress), animated: true)
         }
     }
@@ -343,9 +341,9 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
 extension PlayerController: CircularSliderDelegate {
     func circularSlider(_ circularSlider: CircularSlider, valueForValue value: Float) -> Float {
         if is_touching == 1{
-            let tmp = ChartController.player.duration
+            let tmp = player.duration
             let tmp2 = Float(tmp) * Float(value) * 0.01
-            ChartController.player.currentTime = TimeInterval(tmp2)
+            player.currentTime = TimeInterval(tmp2)
         }
         return floorf(value)
     }
@@ -363,7 +361,7 @@ extension PlayerController: CircularSliderDelegate {
                         //AudioServicesPlaySystemSound(1519)
                         AudioServicesPlaySystemSound(1520)
                         //AudioServicesPlaySystemSound(1521)
-                        if ChartController.player.isPlaying{
+                        if player.isPlaying{
                             SwiftMessages.hideAll()
                             var config = SwiftMessages.Config()
                             config.duration = .seconds(seconds: 0.1)
@@ -376,7 +374,7 @@ extension PlayerController: CircularSliderDelegate {
                             view.configureContent(title: "", body: "일시정지", iconText: iconText)
                             SwiftMessages.show(config: config, view: view)
                             
-                            ChartController.player.pause()
+                            player.pause()
                             
                             let pausedTime : CFTimeInterval = (self.artwork?.layer.convertTime(CACurrentMediaTime(), from: nil))!
                             self.artwork?.layer.speed = 0.0
@@ -394,7 +392,7 @@ extension PlayerController: CircularSliderDelegate {
                             view.configureContent(title: "", body: "재생", iconText: iconText)
                             SwiftMessages.show(config: config, view: view)
                             
-                            ChartController.player.play()
+                            player.play()
                             
                             self.artwork?.layer.speed = 1.0
                             self.artwork?.layer.timeOffset = 0.0
@@ -411,6 +409,7 @@ extension PlayerController: CircularSliderDelegate {
     func is3dTouchAvailable(traitCollection: UITraitCollection) -> Bool {
         return traitCollection.forceTouchCapability == UIForceTouchCapability.available
     }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if is_touching_3d == 1{
             
@@ -419,13 +418,4 @@ extension PlayerController: CircularSliderDelegate {
         is_moved = 0
     }
     
-    override var shouldAutorotate: Bool {
-        return false
-    }
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
-    }
-    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        return .portrait
-    }
 }
