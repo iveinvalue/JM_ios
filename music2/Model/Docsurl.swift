@@ -28,3 +28,12 @@ class Docsurl{
         }
     }
 }
+
+//UIDocumentInteractionControllerDelegate
+//var docController:UIDocumentInteractionController!
+//func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+//    return self
+//}
+//func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
+//    docController = nil
+//}
