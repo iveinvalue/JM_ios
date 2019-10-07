@@ -20,13 +20,21 @@ var is_touching = 0
 var is_touching_3d = 0
 var is_moved = 0
 
+protocol PlayerView: NSObjectProtocol {
+    
+    
+}
+
 class PlayerController: UIViewController , UIDocumentInteractionControllerDelegate{
 
+    var mPresenter = PlayerPresenter()
+    
     var docController:UIDocumentInteractionController!
     var lyric_time = ""
     var lyric = ""
     var timer:Timer!
     let kRotationAnimationKey = "com.myapplication.rotationanimationkey"
+    
     @IBOutlet weak var slider_c: CircularSlider!
     @IBOutlet weak var artwork: UIImageView!
     @IBOutlet weak var tittle: UILabel!
@@ -50,8 +58,7 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
         let docsurl = try! fileManager2.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         
         let destinationFileUrl = docsurl.appendingPathComponent(tittle.text! + " - " + artist.text! + ".mp3")
-        
-        
+
         if fileManager2.fileExists(atPath: destinationFileUrl.path){
             docController = UIDocumentInteractionController(url: destinationFileUrl)
             
@@ -61,12 +68,6 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
             
             docController.presentPreview(animated: true)
             docController.presentOpenInMenu(from: self.view.frame, in: self.view, animated: true)
-            
-            /*
-             let documento = NSData(contentsOfFile: destinationFileUrl.path)
-             let activityViewController: UIActivityViewController = UIActivityViewController(activityItems: [documento!], applicationActivities: nil)
-             activityViewController.popoverPresentationController?.sourceView=self.view
-             present(activityViewController, animated: true, completion: nil)*/
         }
         else {
             print("document was not found")
@@ -117,9 +118,7 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, error: nil)
-//http://dn.genie.co.kr/app/purchase/get_msl.asp?path=a&songid=87463771&callback=jQuery19106672317580988207_1509165099060&_=1509165099061"
-       
+        mPresenter.attachView(self)
         
         slider_c.delegate = self
         self.title = ""
@@ -308,34 +307,6 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
         }
     }
     
-   
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func blurImage(image:UIImage) -> UIImage? {
-        let context = CIContext(options: nil)
-        let inputImage = CIImage(image: image)
-        let originalOrientation = image.imageOrientation
-        let originalScale = image.scale
-        
-        let filter = CIFilter(name: "CIGaussianBlur")
-        filter?.setValue(inputImage, forKey: kCIInputImageKey)
-        filter?.setValue(100.0, forKey: kCIInputRadiusKey)
-        let outputImage = filter?.outputImage
-        
-        var cgImage:CGImage?
-        
-        if let asd = outputImage{
-            cgImage = context.createCGImage(asd, from: (inputImage?.extent)!)
-        }
-        if let cgImageA = cgImage{
-            return UIImage(cgImage: cgImageA, scale: originalScale, orientation: originalOrientation)
-        }
-        return nil
-    }
 }
 
 extension PlayerController: CircularSliderDelegate {
@@ -417,5 +388,9 @@ extension PlayerController: CircularSliderDelegate {
         is_touching = 0
         is_moved = 0
     }
+    
+}
+
+extension PlayerController: PlayerView {
     
 }
