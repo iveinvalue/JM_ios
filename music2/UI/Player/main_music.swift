@@ -20,7 +20,7 @@ var is_touching = 0
 var is_touching_3d = 0
 var is_moved = 0
 
-class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
+class PlayerController: UIViewController , UIDocumentInteractionControllerDelegate{
 
    
 
@@ -39,10 +39,10 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
     @IBOutlet weak var lyric1: UILabel!
     @IBOutlet weak var lyric2: UILabel!
     
-    func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self
     }
-    func documentInteractionControllerDidEndPreview(controller: UIDocumentInteractionController) {
+    func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
         docController = nil
     }
     
@@ -147,9 +147,9 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
         artwork.layer.cornerRadius = artwork.frame.height/2
         artwork.clipsToBounds = true
 
-        let playerItem = AVPlayerItem(url: SecondViewController.myurl! as URL )
+        let playerItem = AVPlayerItem(url: ChartController.myurl! as URL )
         
-        let songAsset = AVURLAsset(url: SecondViewController.myurl! as URL, options: nil)
+        let songAsset = AVURLAsset(url: ChartController.myurl! as URL, options: nil)
         if !(songAsset.lyrics == nil){
             lyric =  songAsset.lyrics!
         }
@@ -161,18 +161,18 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
         var a_artist = ""
         let metadataList = playerItem.asset.commonMetadata
         for item in metadataList {
-            if item.commonKey == "title" {
+            if item.commonKey!.rawValue == "title" {
                 tittle.text = item.stringValue!
                 t_title = item.stringValue!
             }
-            if item.commonKey == "artist" {
+            if item.commonKey!.rawValue == "artist" {
                 artist.text = item.stringValue!
                 a_artist = item.stringValue!
             }
-            if item.commonKey == "albumName" {
+            if item.commonKey!.rawValue == "albumName" {
                 album.text = item.stringValue!
             }
-            if item.commonKey == "artwork" {
+            if item.commonKey!.rawValue == "artwork" {
                 if let audioImage = UIImage(data: (item.value as! NSData) as Data) {
                     //let audioArtwork = MPMediaItemArtwork(image: audioImage)
                     //println(audioImage.description)
@@ -203,13 +203,13 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
                     
                     commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
                         //Update your button here for the pause command
-                        SecondViewController.player.pause()
+                        ChartController.player.pause()
                         return .success
                     }
                     
                     commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
                         //Update your button here for the play command
-                        SecondViewController.player.play()
+                        ChartController.player.play()
                         return .success
                     }
                     
@@ -254,17 +254,17 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
         
         
         if(timer != nil){timer.invalidate()}
-        timer = Timer(timeInterval: 0.5, target: self, selector: #selector(main_music.timerDidFire), userInfo: nil, repeats: true)
-        RunLoop.current.add(timer, forMode: RunLoopMode.commonModes)
+        timer = Timer(timeInterval: 0.5, target: self, selector: #selector(PlayerController.timerDidFire), userInfo: nil, repeats: true)
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.common)
 
         var end_time_m = ""
         var end_time_s = ""
-        if(Int(SecondViewController.player.duration) < 60){
+        if(Int(ChartController.player.duration) < 60){
             end_time_m = "0"
-            end_time_s = Int(SecondViewController.player.duration).description
+            end_time_s = Int(ChartController.player.duration).description
         }else{
-            end_time_m = (Int(SecondViewController.player.duration) / Int(60)).description
-            end_time_s = (Int(SecondViewController.player.duration) % Int(60)).description
+            end_time_m = (Int(ChartController.player.duration) / Int(60)).description
+            end_time_s = (Int(ChartController.player.duration) % Int(60)).description
         }
         if(Int(end_time_s)! < 10){
             end_time_s = "0" + end_time_s
@@ -274,8 +274,8 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
     
     
     @objc func timerDidFire(){
-        let time_change = Int(Float(SecondViewController.player.currentTime) * 1000 )
-        var arr_time = lyric_time.components(separatedBy: "\",\"")
+        let time_change = Int(Float(ChartController.player.currentTime) * 1000 )
+        let arr_time = lyric_time.components(separatedBy: "\",\"")
         if arr_time.count > 5{
             for i in 1...arr_time.count - 1{
                 if Int(arr_time[i].components(separatedBy: "\":\"")[0])! >= time_change{
@@ -287,11 +287,11 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
         }
         
         //print(SecondViewController.player.currentTime)
-        let tmp_current = Int(SecondViewController.player.currentTime).description
+        let tmp_current = Int(ChartController.player.currentTime).description
         var start_time_m = ""
         var start_time_s = ""
 
-        if(Int(SecondViewController.player.currentTime) < 60){
+        if(Int(ChartController.player.currentTime) < 60){
             start_time_m = "0"
             start_time_s = tmp_current
         }else{
@@ -305,7 +305,7 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
         start.text = start_time_m + ":" + start_time_s
         
          if is_touching == 0{
-            let progress = SecondViewController.player.currentTime / SecondViewController.player.duration * 100
+            let progress = ChartController.player.currentTime / ChartController.player.duration * 100
             slider_c.setValue(Float(progress), animated: true)
         }
     }
@@ -340,12 +340,12 @@ class main_music: UIViewController , UIDocumentInteractionControllerDelegate{
     }
 }
 
-extension main_music: CircularSliderDelegate {
+extension PlayerController: CircularSliderDelegate {
     func circularSlider(_ circularSlider: CircularSlider, valueForValue value: Float) -> Float {
         if is_touching == 1{
-            let tmp = SecondViewController.player.duration
+            let tmp = ChartController.player.duration
             let tmp2 = Float(tmp) * Float(value) * 0.01
-            SecondViewController.player.currentTime = TimeInterval(tmp2)
+            ChartController.player.currentTime = TimeInterval(tmp2)
         }
         return floorf(value)
     }
@@ -363,20 +363,20 @@ extension main_music: CircularSliderDelegate {
                         //AudioServicesPlaySystemSound(1519)
                         AudioServicesPlaySystemSound(1520)
                         //AudioServicesPlaySystemSound(1521)
-                        if SecondViewController.player.isPlaying{
+                        if ChartController.player.isPlaying{
                             SwiftMessages.hideAll()
                             var config = SwiftMessages.Config()
                             config.duration = .seconds(seconds: 0.1)
-                            config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
+                            config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar)
                             
                             let view = MessageView.viewFromNib(layout: .statusLine)
                             view.configureTheme(.warning)
                             view.configureDropShadow()
-                            let iconText = [""].sm_random()!
+                            let iconText = [""].randomElement()!
                             view.configureContent(title: "", body: "일시정지", iconText: iconText)
                             SwiftMessages.show(config: config, view: view)
                             
-                            SecondViewController.player.pause()
+                            ChartController.player.pause()
                             
                             let pausedTime : CFTimeInterval = (self.artwork?.layer.convertTime(CACurrentMediaTime(), from: nil))!
                             self.artwork?.layer.speed = 0.0
@@ -385,16 +385,16 @@ extension main_music: CircularSliderDelegate {
                             SwiftMessages.hideAll()
                             var config = SwiftMessages.Config()
                             config.duration = .seconds(seconds: 0.1)
-                            config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
+                            config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar)
                             
                             let view = MessageView.viewFromNib(layout: .statusLine)
                             view.configureTheme(.success)
                             view.configureDropShadow()
-                            let iconText = [""].sm_random()!
+                            let iconText = [""].randomElement()!
                             view.configureContent(title: "", body: "재생", iconText: iconText)
                             SwiftMessages.show(config: config, view: view)
                             
-                            SecondViewController.player.play()
+                            ChartController.player.play()
                             
                             self.artwork?.layer.speed = 1.0
                             self.artwork?.layer.timeOffset = 0.0

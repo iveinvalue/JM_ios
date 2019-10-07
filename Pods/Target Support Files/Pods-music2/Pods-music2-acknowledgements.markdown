@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 ## DTZFloatingActionButton
 
-Copyright (c) 2017 hintoz <hintoz@gmail.com>
+Copyright (c) 2017 Evgeny Dats (hintoz) <hintoz@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

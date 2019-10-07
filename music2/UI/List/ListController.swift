@@ -18,7 +18,7 @@ class save_cell: UITableViewCell {
     @IBOutlet weak var image_: UIImageView!
 }
 
-class FirstViewController: UITableViewController {
+class ListController: UITableViewController {
 
 
     
@@ -39,8 +39,8 @@ class FirstViewController: UITableViewController {
         refresh(nil)
         DTZFABManager.shared.button().handler = {
             button in
-            if !( SecondViewController.myurl == nil){
-                let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "main_music") as! main_music
+            if !( ChartController.myurl == nil){
+                let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayerController") as! PlayerController
                 self.navigationController?.pushViewController(secondViewController, animated: true)
             }
             //print("Tapped")
@@ -65,18 +65,18 @@ class FirstViewController: UITableViewController {
         
         DTZFABManager.shared.button().handler = {
             button in
-            if !( SecondViewController.myurl == nil){
-                let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "main_music") as! main_music
+            if !( ChartController.myurl == nil){
+                let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayerController") as! PlayerController
                 self.navigationController?.pushViewController(secondViewController, animated: true)
             }else{
                 var config = SwiftMessages.Config()
                 config.duration = .seconds(seconds: 0.6)
-                config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
+                config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar)
                 
                 let view = MessageView.viewFromNib(layout: .statusLine)
                 view.configureTheme(.error)
                 view.configureDropShadow()
-                let iconText = [""].sm_random()!
+                let iconText = [""].randomElement()!
                 view.configureContent(title: "", body: "재생중인 음악이 없습니다.", iconText: iconText)
                 SwiftMessages.show(config: config, view: view)
             }
@@ -170,8 +170,8 @@ class FirstViewController: UITableViewController {
    
     
     @objc func playing(_ button:UIBarButtonItem!){
-        if !( SecondViewController.myurl == nil){
-            let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "main_music") as! main_music
+        if !( ChartController.myurl == nil){
+            let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayerController") as! PlayerController
             self.navigationController?.pushViewController(secondViewController, animated: true)
         }
     }
@@ -210,8 +210,8 @@ class FirstViewController: UITableViewController {
         return true
     }
     //제거 눌렀을때
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == UITableViewCellEditingStyle.delete) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCell.EditingStyle.delete) {
             //let myurl  = docsurl.appendingPathComponent("/" + mp3FileNames[indexPath.row] + ".mp3") as NSURL
             let fileManager = FileManager.default
             let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
@@ -285,57 +285,23 @@ class FirstViewController: UITableViewController {
         //print("row: \(indexPath.row)")
         //print("id: \(unm_[indexPath.row])")
         let myurl  = docsurl.appendingPathComponent("/" + mp3FileNames[sections[indexPath.section].index + indexPath.row] + ".mp3") as NSURL
-       SecondViewController.myurl = myurl
+       ChartController.myurl = myurl
         
         do{
+            try ChartController.player = AVAudioPlayer(contentsOf: ChartController.myurl! as URL)
             
-            try SecondViewController.player = AVAudioPlayer(contentsOf: SecondViewController.myurl! as URL)
-            
-            SecondViewController.player.prepareToPlay()
-            SecondViewController.player.volume = 1.0
+            ChartController.player.prepareToPlay()
+            ChartController.player.volume = 1.0
             //SecondViewController.player.delegate = self
-            SecondViewController.player.play()
-            
-            //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            //try AVAudioSession.sharedInstance().setActive(true)
-            
-            
-            
-        }
-        catch{}
+            ChartController.player.play()
+        }catch{
+       
         
-        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "main_music") as! main_music
+        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayerController") as! PlayerController
         self.navigationController?.pushViewController(secondViewController, animated: true)
     }
     
-    override var shouldAutorotate: Bool {
-        return false
-    }
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
-    }
-    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        return .portrait
-    }
-}
-extension String {
-    var hangul: String {
-        get {
-            let hangle = [
-                ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"],
-                ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"],
-                ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"]
-            ]
-            
-            return reduce("") { result, char in
-                if case let code = Int(String(char).unicodeScalars.reduce(0){$0.0 + $0.1.value}) - 44032, code > -1 && code < 11172 {
-                    let cho = code / 21 / 28, jung = code % (21 * 28) / 28, jong = code % 28;
-                    return result + hangle[0][cho] + hangle[1][jung] + hangle[2][jong]
-                }
-                return result + String(char)
-            }
-        }
-    }
 }
 
 
+}

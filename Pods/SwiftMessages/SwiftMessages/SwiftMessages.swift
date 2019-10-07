@@ -53,7 +53,7 @@ open class SwiftMessages {
         /**
          Displays the message view under navigation bars and tab bars if an
          appropriate one is found. Otherwise, it is displayed in a new window
-         at level `UIWindowLevelNormal`. Use this option to automatically display
+         at level `UIWindow.Level.normal`. Use this option to automatically display
          under bars, where applicable. Because this option involves a top-down
          search, an approrpiate context might not be found when the view controller
          heirarchy incorporates custom containers. If this is the case, the
@@ -62,13 +62,14 @@ open class SwiftMessages {
         case automatic
 
         /**
-         Displays the message in a new window at the specified window level. Use
-         `UIWindowLevelNormal` to display under the status bar and `UIWindowLevelStatusBar`
-         to display over. When displaying under the status bar, SwiftMessages automatically
-         increases the top margins of any message view that adopts the `MarginInsetting`
-         protocol (as `MessageView` does) to account for the status bar.
+         Displays the message in a new window at the specified window level.
+         SwiftMessages automatically increases the top margins of any message
+         view that adopts the `MarginInsetting` protocol (as `MessageView` does)
+         to account for the status bar. As of iOS 13, windows can no longer cover the
+         status bar. The only alternative is to set `Config.prefersStatusBarHidden = true`
+         to hide it.
         */
-        case window(windowLevel: UIWindowLevel)
+        case window(windowLevel: UIWindow.Level)
         
         /**
          Displays the message view under navigation bars and tab bars if an
@@ -178,7 +179,7 @@ open class SwiftMessages {
          - `interactive`: Specifies whether or not tapping the
          dimmed area dismisses the message view.
          */
-        case blur(style: UIBlurEffectStyle, alpha: CGFloat, interactive: Bool)
+        case blur(style: UIBlurEffect.Style, alpha: CGFloat, interactive: Bool)
 
         public var interactive: Bool {
             switch self {
@@ -261,15 +262,22 @@ open class SwiftMessages {
         public var interactiveHide = true
         
         /**
-         Specifies the preferred status bar style when the view is displayed
-         directly behind the status bar, such as when using `.Window`
-         presentation context with a `UIWindowLevelNormal` window level
-         and `.Top` presentation style. This option is useful if the message
-         view has a background color that needs a different status bar style than
-         the current one. The default is `.Default`.
+         Specifies the preferred status bar style when the view is being
+         displayed in a window. This can be useful when the view is being
+         displayed behind the status bar and the message view has a background
+         color that needs a different status bar style than the current one.
+         The default is `nil`.
          */
         public var preferredStatusBarStyle: UIStatusBarStyle?
-        
+
+        /**
+         Specifies the preferred status bar visibility when the view is being
+         displayed in a window. As of iOS 13, windows can no longer cover the
+         status bar. The only alternative is to hide the status bar by setting
+         this options to `true`. Default is `nil`.
+         */
+        public var prefersStatusBarHidden: Bool?
+
         /**
          If a view controller is created to host the message view, should the view 
          controller auto rotate?  The default is 'true', meaning it should auto
@@ -309,6 +317,18 @@ open class SwiftMessages {
          label, e.g. "dismiss" when the `interactive` option is used.
         */
         public var dimModeAccessibilityLabel: String = "dismiss"
+
+        /**
+         If specified, SwiftMessages calls this closure when an instance of
+         `WindowViewController` is needed. Use this if you need to supply a custom subclass
+         of `WindowViewController`.
+         */
+        public var windowViewController: ((_ windowLevel: UIWindow.Level?, _ config: SwiftMessages.Config) -> WindowViewController)?
+
+        /**
+         Supply an instance of `KeyboardTrackingView` to have the message view avoid the keyboard.
+         */
+        public var keyboardTrackingView: KeyboardTrackingView?
     }
     
     /**
@@ -378,9 +398,9 @@ open class SwiftMessages {
     /**
      Hide the current message being displayed by animating it away.
      */
-    open func hide() {
+    open func hide(animated: Bool = true) {
         messageQueue.sync {
-            hideCurrent()
+            hideCurrent(animated: animated)
         }
     }
 
@@ -405,7 +425,7 @@ open class SwiftMessages {
      */
     open func hide(id: String) {
         messageQueue.sync {
-            if id == current?.id {
+            if id == _current?.id {
                 hideCurrent()
             }
             queue = queue.filter { $0.id != id }
@@ -429,7 +449,7 @@ open class SwiftMessages {
                     return
                 }
             }
-            if id == current?.id {
+            if id == _current?.id {
                 hideCurrent()
             }
             queue = queue.filter { $0.id != id }
@@ -482,11 +502,17 @@ open class SwiftMessages {
         }
     }
 
+    func show(presenter: Presenter) {
+        messageQueue.sync {
+            enqueue(presenter: presenter)
+        }
+    }
+
     fileprivate let messageQueue = DispatchQueue(label: "it.swiftkick.SwiftMessages", attributes: [])
     fileprivate var queue: [Presenter] = []
     fileprivate var delays = Delays()
     fileprivate var counts: [String : Int] = [:]
-    fileprivate var current: Presenter? = nil {
+    fileprivate var _current: Presenter? = nil {
         didSet {
             if oldValue != nil {
                 let delayTime = DispatchTime.now() + pauseBetweenMessages
@@ -500,7 +526,7 @@ open class SwiftMessages {
     fileprivate func enqueue(presenter: Presenter) {
         if presenter.config.ignoreDuplicates {
             counts[presenter.id] = (counts[presenter.id] ?? 0) + 1
-            if current?.id == presenter.id && current?.isHiding == false { return }
+            if _current?.id == presenter.id && _current?.isHiding == false { return }
             if queue.filter({ $0.id == presenter.id }).count > 0 { return }
         }
         func doEnqueue() {
@@ -520,14 +546,14 @@ open class SwiftMessages {
     }
     
     fileprivate func dequeueNext() {
-        guard self.current == nil, queue.count > 0 else { return }
+        guard self._current == nil, queue.count > 0 else { return }
         let current = queue.removeFirst()
-        self.current = current
+        self._current = current
         // Set `autohideToken` before the animation starts in case
         // the dismiss gesture begins before we've queued the autohide
         // block on animation completion.
         self.autohideToken = current
-        current.showDate = Date()
+        current.showDate = CACurrentMediaTime()
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else { return }
             do {
@@ -545,50 +571,56 @@ open class SwiftMessages {
                 }
             } catch {
                 strongSelf.messageQueue.sync {
-                    strongSelf.current = nil
+                    strongSelf._current = nil
                 }
             }
         }
     }
 
     fileprivate func internalHide(id: String) {
-        if id == current?.id {
+        if id == _current?.id {
             hideCurrent()
         }
         queue = queue.filter { $0.id != id }
         delays.ids.remove(id)
     }
-
-    fileprivate func hideCurrent() {
-        guard let current = current, !current.isHiding else { return }
-        let delay = current.delayHide ?? 0
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self, weak current] in
-            guard let strongCurrent = current else { return }
-            strongCurrent.hide { (completed) in
-                guard completed, let strongSelf = self, let strongCurrent = current else { return }
+ 
+    fileprivate func hideCurrent(animated: Bool = true) {
+        guard let current = _current, !current.isHiding else { return }
+        let action = { [weak self] in
+            current.hide(animated: animated) { (completed) in
+                guard completed, let strongSelf = self else { return }
                 strongSelf.messageQueue.sync {
-                    guard strongSelf.current === strongCurrent else { return }
-                    strongSelf.counts[strongCurrent.id] = nil
-                    strongSelf.current = nil
+                    guard strongSelf._current === current else { return }
+                    strongSelf.counts[current.id] = nil
+                    strongSelf._current = nil
                 }
             }
+        }
+        let delay = current.delayHide ?? 0
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            action()
         }
     }
 
     fileprivate weak var autohideToken: AnyObject?
     
     fileprivate func queueAutoHide() {
-        guard let current = current else { return }
+        guard let current = _current else { return }
         autohideToken = current
         if let pauseDuration = current.pauseDuration {
             let delayTime = DispatchTime.now() + pauseDuration
-            messageQueue.asyncAfter(deadline: delayTime, execute: { [weak self, weak current] in
-                guard let strongSelf = self, let current = current else { return }
+            messageQueue.asyncAfter(deadline: delayTime, execute: {
                 // Make sure we've still got a green light to auto-hide.
-                if strongSelf.autohideToken !== current { return }
-                strongSelf.internalHide(id: current.id)
+                if self.autohideToken !== current { return }
+                self.internalHide(id: current.id)
             })
         }
+    }
+
+    deinit {
+        // Prevent orphaned messages
+        hideCurrent()
     }
 }
 
@@ -599,6 +631,19 @@ open class SwiftMessages {
 extension SwiftMessages {
 
     /**
+     Returns the message view of type `T` if it is currently being shown or hidden.
+
+     - Returns: The view of type `T` if it is currently being shown or hidden.
+     */
+    public func current<T: UIView>() -> T? {
+        var view: T?
+        messageQueue.sync {
+            view = _current?.view as? T
+        }
+        return view
+    }
+
+    /**
      Returns a message view with the given `id` if it is currently being shown or hidden.
 
      - Parameter id: The id of a message that adopts `Identifiable`.
@@ -607,7 +652,7 @@ extension SwiftMessages {
     public func current<T: UIView>(id: String) -> T? {
         var view: T?
         messageQueue.sync {
-            if let current = current, current.id == id {
+            if let current = _current, current.id == id {
                 view = current.view as? T
             }
         }
@@ -670,7 +715,7 @@ extension SwiftMessages: PresenterDelegate {
     }
 
     private func presenter(forAnimator animator: Animator) -> Presenter? {
-        if let current = current, animator === current.animator {
+        if let current = _current, animator === current.animator {
             return current
         }
         let queued = queue.filter { $0.animator === animator }
@@ -756,7 +801,11 @@ extension SwiftMessages {
             }
         }
         let arrayOfViews = resolvedBundle.loadNibNamed(name, owner: filesOwner, options: nil) ?? []
+        #if swift(>=4.1)
+        guard let view = arrayOfViews.compactMap( { $0 as? T} ).first else { throw SwiftMessagesError.cannotLoadViewFromNib(nibName: name) }
+        #else
         guard let view = arrayOfViews.flatMap( { $0 as? T} ).first else { throw SwiftMessagesError.cannotLoadViewFromNib(nibName: name) }
+        #endif
         return view
     }
 }
@@ -796,8 +845,8 @@ extension SwiftMessages {
         globalInstance.show(config: config, view: view)
     }
 
-    public static func hide() {
-        globalInstance.hide()
+    public static func hide(animated: Bool = true) {
+        globalInstance.hide(animated: animated)
     }
     
     public static func hideAll() {

@@ -49,6 +49,17 @@ open class DTZFloatingActionButton: UIView {
     
     open var animationType: DTZFABAnimationType = .scale
     
+    // Shadow
+    open var isAddShadow: Bool = false
+    
+    open var shadowCircleColor: UIColor = UIColor.black
+    
+    open var shadowCircleOpacity: Float = 0.5
+    
+    open var shadowCircleOffSet: CGSize = CGSize(width: 0, height: 2)
+    
+    open var shadowCircleRadius: CGFloat = 1
+    
     // Set true if you use tableView etc
     open var isScrollView: Bool = false
     
@@ -116,6 +127,7 @@ open class DTZFloatingActionButton: UIView {
         }
         
         setCircleLayer()
+        if isAddShadow { setShadow() }
         
         guard buttonImage == nil else {
             setButtonImage()
@@ -140,13 +152,14 @@ open class DTZFloatingActionButton: UIView {
         circleLayer.frame = CGRect(x: 0, y: 0, width: size, height: size)
         circleLayer.backgroundColor = buttonColor.cgColor
         circleLayer.cornerRadius = size / 2
+        layer.zPosition = 1
         layer.addSublayer(circleLayer)
     }
     
     fileprivate func setPlusLayer() {
         plusLayer.removeFromSuperlayer()
         plusLayer.frame = CGRect(x: 0, y: 0, width: size, height: size)
-        plusLayer.lineCap = kCALineCapRound
+        plusLayer.lineCap = CAShapeLayerLineCap.round
         plusLayer.strokeColor = plusColor.cgColor
         plusLayer.lineWidth = 2.0
         plusLayer.path = plusBezierPath().cgPath
@@ -164,13 +177,22 @@ open class DTZFloatingActionButton: UIView {
         )
         addSubview(buttonImageView)
     }
-    //jm
+    
     fileprivate func setRightButtomFrame(_ keyboardSize: CGFloat = 0) {
-        frame = CGRect(x: (superview!.frame.size.width - size) - paddingX,
-                       y: (superview!.frame.size.height - size) - paddingY,
-                       width: size,
-                       height: size
-        )
+        guard let superview = superview else { return }
+        if #available(iOS 11.0, *) {
+            frame = CGRect(x: (superview.frame.size.width - size - superview.safeAreaInsets.right) - paddingX,
+                           y: (superview.frame.size.height - size - superview.safeAreaInsets.bottom) - paddingY,
+                           width: size,
+                           height: size
+            )
+        } else {
+            frame = CGRect(x: (superview.frame.size.width - size) - paddingX,
+                           y: (superview.frame.size.height - size) - paddingY,
+                           width: size,
+                           height: size
+            )
+        }
 //        frame.size.width += paddingX
 //        frame.size.height += paddingY
     }
@@ -184,16 +206,27 @@ open class DTZFloatingActionButton: UIView {
         return path
     }
     
+    fileprivate func setShadow() {
+        circleLayer.shadowColor = shadowCircleColor.cgColor
+        circleLayer.shadowOpacity = shadowCircleOpacity
+        circleLayer.shadowOffset = shadowCircleOffSet
+        circleLayer.shadowRadius = shadowCircleRadius
+        
+        circleLayer.shadowPath = UIBezierPath(roundedRect: circleLayer.bounds, cornerRadius: size / 2).cgPath
+        circleLayer.shouldRasterize = true
+        circleLayer.rasterizationScale = UIScreen.main.scale
+    }
+    
     fileprivate func setObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -248,10 +281,13 @@ open class DTZFloatingActionButton: UIView {
         }
     }
     
-    internal func deviceOrientationDidChange(_ notification: Notification) {
-        guard let keyboardSize: CGFloat = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height else {
+    @objc internal func deviceOrientationDidChange(_ notification: Notification) {
+        guard let keyboardSize: CGFloat = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height else {
             return
         }
+        
+        
+        
         if isCustomFrame {
             size = min(frame.size.width, frame.size.height)
         } else {
@@ -259,8 +295,8 @@ open class DTZFloatingActionButton: UIView {
         }
     }
     
-    internal func keyboardWillShow(_ notification: Notification) {
-        guard let keyboardSize: CGFloat = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height else {
+    @objc internal func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardSize: CGFloat = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height else {
             return
         }
         
@@ -274,7 +310,7 @@ open class DTZFloatingActionButton: UIView {
             setRightButtomFrame(keyboardSize)
         }
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions(), animations: { 
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions(), animations: { 
             self.frame = CGRect(x: UIScreen.main.bounds.width - self.size - self.paddingX,
                                 y: UIScreen.main.bounds.height - self.size - keyboardSize - self.paddingY,
                                 width: self.size,
@@ -283,12 +319,12 @@ open class DTZFloatingActionButton: UIView {
         }, completion: nil)
     }
     
-    internal func keyboardWillHide(_ notification: Notification) {
+    @objc internal func keyboardWillHide(_ notification: Notification) {
         if isScrollView {
             return
         }
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions(), animations: { 
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions(), animations: { 
             if self.isCustomFrame {
                 self.size = min(self.frame.size.width, self.frame.size.height)
             } else {
@@ -331,18 +367,3 @@ extension UIView {
         return superviews
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

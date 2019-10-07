@@ -10,6 +10,13 @@ import UIKit
 
 open class PhysicsPanHandler {
 
+    public var hideDelay: TimeInterval = 0.2
+
+    public struct MotionSnapshot {
+        var angle: CGFloat
+        var time: CFAbsoluteTime
+    }
+
     public final class State {
 
         weak var messageView: UIView?
@@ -23,13 +30,11 @@ open class PhysicsPanHandler {
                 }
                 if let attachmentBehavior = attachmentBehavior {
                     dynamicAnimator.addBehavior(attachmentBehavior)
-                    angle = messageView?.angle ?? angle
-                    time = CFAbsoluteTimeGetCurrent()
+                    addSnapshot()
                 }
             }
         }
-        var time: CFAbsoluteTime = 0
-        var angle: CGFloat = 0
+        var snapshots: [MotionSnapshot] = []
 
         public init(messageView: UIView, containerView: UIView) {
             self.messageView = messageView
@@ -43,9 +48,14 @@ open class PhysicsPanHandler {
         }
 
         func update(attachmentAnchorPoint anchorPoint: CGPoint) {
-            angle = messageView?.angle ?? angle
-            time = CFAbsoluteTimeGetCurrent()
+            addSnapshot()
             attachmentBehavior?.anchorPoint = anchorPoint
+        }
+
+        func addSnapshot() {
+            let angle = messageView?.angle ?? snapshots.last?.angle ?? 0
+            let time = CFAbsoluteTimeGetCurrent()
+            snapshots.append(MotionSnapshot(angle: angle, time: time))
         }
 
         public func stop() {
@@ -59,6 +69,17 @@ open class PhysicsPanHandler {
             messageView.center = center
             messageView.transform = transform
         }
+
+        public var angularVelocity: CGFloat {
+            guard let last = snapshots.last else { return 0 }
+            for previous in snapshots.reversed() {
+                // Ignore snapshots where the angle or time hasn't changed to avoid degenerate cases.
+                if previous.angle != last.angle && previous.time != last.time {
+                    return (last.angle - previous.angle) / CGFloat(last.time - previous.time)
+                }
+            }
+            return 0
+        }
     }
 
     weak var animator: Animator?
@@ -68,17 +89,23 @@ open class PhysicsPanHandler {
     private(set) public var isOffScreen = false
     private var restingCenter: CGPoint?
 
-    public init(context: AnimationContext, animator: Animator) {
-        messageView = context.messageView
-        containerView = context.containerView
-        self.animator = animator
+    public init() {}
+
+    public private(set) lazy var pan: UIPanGestureRecognizer = {
         let pan = UIPanGestureRecognizer()
         pan.addTarget(self, action: #selector(pan(_:)))
-        if let view = messageView as? BackgroundViewable {
-            view.backgroundView.addGestureRecognizer(pan)
-        } else {
-            context.messageView.addGestureRecognizer(pan)
+        return pan
+    }()
+
+    func configure(context: AnimationContext, animator: Animator) {
+        if let oldView = (messageView as? BackgroundViewable)?.backgroundView ?? messageView {
+            oldView.removeGestureRecognizer(pan)
         }
+        messageView = context.messageView
+        let view = (messageView as? BackgroundViewable)?.backgroundView ?? messageView
+        view?.addGestureRecognizer(pan)
+        containerView = context.containerView
+        self.animator = animator
     }
 
     @objc func pan(_ pan: UIPanGestureRecognizer) {
@@ -95,12 +122,12 @@ open class PhysicsPanHandler {
             let attachmentBehavior = UIAttachmentBehavior(item: messageView, offsetFromCenter: offset, attachedToAnchor: anchorPoint)
             state.attachmentBehavior = attachmentBehavior
             state.itemBehavior.action = { [weak self, weak messageView, weak containerView] in
-                guard let strongSelf = self, let messageView = messageView, let containerView = containerView, let animator = strongSelf.animator else { return }
+                guard let self = self, !self.isOffScreen, let messageView = messageView, let containerView = containerView, let animator = self.animator else { return }
                 let view = (messageView as? BackgroundViewable)?.backgroundView ?? messageView
                 let frame = containerView.convert(view.bounds, from: view)
                 if !containerView.bounds.intersects(frame) {
-                    strongSelf.isOffScreen = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    self.isOffScreen = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + self.hideDelay) {
                         animator.delegate?.hide(animator: animator)
                     }
                 }
@@ -110,15 +137,9 @@ open class PhysicsPanHandler {
             state.update(attachmentAnchorPoint: anchorPoint)
         case .ended, .cancelled:
             guard let state = state else { return }
+            state.update(attachmentAnchorPoint: anchorPoint)
             let velocity = pan.velocity(in: containerView)
-            let time = CFAbsoluteTimeGetCurrent()
-            let angle = messageView.angle
-            let angularVelocity: CGFloat
-            if time > state.time {
-                angularVelocity = (angle - state.angle) / CGFloat(time - state.time)
-            } else {
-                angularVelocity = 0
-            }
+            let angularVelocity = state.angularVelocity
             let speed = sqrt(pow(velocity.x, 2) + pow(velocity.y, 2))
             // The multiplier on angular velocity was determined by hand-tuning
             let energy = sqrt(pow(speed, 2) + pow(angularVelocity * 75, 2))
@@ -126,15 +147,15 @@ open class PhysicsPanHandler {
                 // Limit the speed and angular velocity to reasonable values
                 let speedScale = speed > 0 ? min(1, 1800 / speed) : 1
                 let escapeVelocity = CGPoint(x: velocity.x * speedScale, y: velocity.y * speedScale)
-                let angularSpeedScale = min(1, 10 / fabs(angularVelocity))
+                let angularSpeedScale = min(1, 10 / abs(angularVelocity))
                 let escapeAngularVelocity = angularVelocity * angularSpeedScale
                 state.itemBehavior.addLinearVelocity(escapeVelocity, for: messageView)
                 state.itemBehavior.addAngularVelocity(escapeAngularVelocity, for: messageView)
                 state.attachmentBehavior = nil
             } else {
-                animator.delegate?.panEnded(animator: animator)
                 state.stop()
                 self.state = nil
+                animator.delegate?.panEnded(animator: animator)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .beginFromCurrentState, animations: {
                     messageView.center = self.restingCenter ?? CGPoint(x: containerView.bounds.width / 2, y: containerView.bounds.height / 2)
                     messageView.transform = CGAffineTransform.identity

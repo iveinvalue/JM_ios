@@ -63,11 +63,11 @@ extension String {
         
         // add attributes
         if #available(iOS 8.2, *) {
-            integer.addAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 42, weight: UIFontWeightRegular)], range: NSMakeRange(0, integer.length))
-            decimal.addAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 42, weight: UIFontWeightThin)], range: NSMakeRange(0, decimal.length))
+            integer.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 42, weight: UIFont.Weight.regular)], range: NSMakeRange(0, integer.length))
+            decimal.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 42, weight: UIFont.Weight.thin)], range: NSMakeRange(0, decimal.length))
         } else {
-            integer.addAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 42)], range: NSMakeRange(0, integer.length))
-            decimal.addAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 42)], range: NSMakeRange(0, decimal.length))
+            integer.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 42)], range: NSMakeRange(0, integer.length))
+            decimal.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 42)], range: NSMakeRange(0, decimal.length))
         }
         
         

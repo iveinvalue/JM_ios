@@ -8,36 +8,51 @@
 
 import UIKit
 
-public extension MarginAdjustable where Self: UIView {
-
-    public func topAdjustment(container: UIView, context: AnimationContext) -> CGFloat {
-        var top: CGFloat = 0
-        top += bounceAnimationOffset
-        if !context.safeZoneConflicts.isDisjoint(with: [.sensorNotch, .statusBar]) {
-            if #available(iOS 11, *), container.safeAreaInsets.top > 0  {
-                // Linear formula based on:
-                // iPhone 8 - 20pt top safe area with 0pt adjustment
-                // iPhone X - 44pt top safe area with -6pt adjustment
-                top -= 6 * (container.safeAreaInsets.top - 20) / (44 - 20)
-                top += safeAreaTopOffset
+extension MarginAdjustable where Self: UIView {
+    public func defaultMarginAdjustment(context: AnimationContext) -> UIEdgeInsets {
+        var layoutMargins: UIEdgeInsets = layoutMarginAdditions
+        var safeAreaInsets: UIEdgeInsets
+        if #available(iOS 11, *) {
+            insetsLayoutMarginsFromSafeArea = false
+            safeAreaInsets = self.safeAreaInsets
+        } else {
+            #if SWIFTMESSAGES_APP_EXTENSIONS
+            let application: UIApplication? = nil
+            #else
+            let application: UIApplication? = UIApplication.shared
+            #endif
+            if !context.safeZoneConflicts.isDisjoint(with: [.statusBar]),
+                let app = application,
+                app.statusBarOrientation == .portrait || app.statusBarOrientation == .portraitUpsideDown {
+                let frameInWindow = convert(bounds, to: window)
+                let top = max(0, 20 - frameInWindow.minY)
+                safeAreaInsets = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
             } else {
-                top += statusBarOffset
+                safeAreaInsets = .zero
             }
         }
-        if #available(iOS 11, *), !context.safeZoneConflicts.isDisjoint(with: .coveredStatusBar) {
-            top -= safeAreaInsets.top
+        if !context.safeZoneConflicts.isDisjoint(with: .overStatusBar) {
+            safeAreaInsets.top = 0
         }
-        return top
+        layoutMargins = collapseLayoutMarginAdditions
+            ? layoutMargins.collapse(toInsets: safeAreaInsets)
+            : layoutMargins + safeAreaInsets
+        return layoutMargins
     }
+}
 
-    public func bottomAdjustment(container: UIView, context: AnimationContext) -> CGFloat {
-        var bottom: CGFloat = 0
-        bottom += bounceAnimationOffset
-        if !context.safeZoneConflicts.isDisjoint(with: [.homeIndicator]) {
-            if #available(iOS 11, *), container.safeAreaInsets.bottom > 0  {
-                bottom += safeAreaBottomOffset
-            }
-        }
-        return bottom
+extension UIEdgeInsets {
+    func collapse(toInsets insets: UIEdgeInsets) -> UIEdgeInsets {
+        let top = self.top.collapse(toInset: insets.top)
+        let left = self.left.collapse(toInset: insets.left)
+        let bottom = self.bottom.collapse(toInset: insets.bottom)
+        let right = self.right.collapse(toInset: insets.right)
+        return UIEdgeInsets(top: top, left: left, bottom: bottom, right: right)
+    }
+}
+
+extension CGFloat {
+    func collapse(toInset inset: CGFloat) -> CGFloat {
+        return Swift.max(self, inset)
     }
 }
