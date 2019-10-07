@@ -127,14 +127,15 @@ extension ListController: ListView {
             button in
             self.mPresenter.CheckPlaying()
         }
-        DTZFABManager.shared.button().paddingY = 14 + (self.tabBarController?.tabBar.frame.size.height)!
+        DTZFABManager.shared.button().paddingX = 28
+        DTZFABManager.shared.button().paddingY = -14 + (self.tabBarController?.tabBar.frame.size.height)!
         DTZFABManager.shared.button().buttonImage = UIImage(named: "player_icon")
         DTZFABManager.shared.button().plusColor = UIColor.white
         DTZFABManager.shared.show()
     }
     
     func MessageUp(str: String){
-        SwiftMsg(str: str)
+        SwiftMsg(str,.error,0.6)
     }
     
 }

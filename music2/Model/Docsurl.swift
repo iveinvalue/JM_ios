@@ -10,14 +10,14 @@ import Foundation
 
 class Docsurl{
     static var docsurl : URL! = nil
+    static let fileManager2 = FileManager.default
     
     init(){
         
     }
     
     func Do(){
-        let fileManager2 = FileManager.default
-        Docsurl.docsurl = try! fileManager2.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        Docsurl.docsurl = try! Docsurl.fileManager2.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         
         //폴더 생성
         let dataPath = Docsurl.docsurl.appendingPathComponent("tmp")

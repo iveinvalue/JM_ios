@@ -25,6 +25,8 @@
 		CE542A9F234B319900307AAF /* Mp3File.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542A9E234B319900307AAF /* Mp3File.swift */; };
 		CE542AA1234B35F900307AAF /* SwiftMsg.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542AA0234B35F900307AAF /* SwiftMsg.swift */; };
 		CE542AA3234B394E00307AAF /* PlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542AA2234B394E00307AAF /* PlayerPresenter.swift */; };
+		CE542AA5234B583E00307AAF /* ViewRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542AA4234B583E00307AAF /* ViewRotate.swift */; };
+		CE542AA7234B5AF200307AAF /* Getlyric.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE542AA6234B5AF200307AAF /* Getlyric.swift */; };
 		CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */; };
 		CE76DD601F889F8F00B4441B /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD5F1F889F8F00B4441B /* ListController.swift */; };
 		CE76DD621F889F8F00B4441B /* ChartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76DD611F889F8F00B4441B /* ChartController.swift */; };
@@ -95,6 +97,8 @@
 		CE542A9E234B319900307AAF /* Mp3File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3File.swift; sourceTree = "<group>"; };
 		CE542AA0234B35F900307AAF /* SwiftMsg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMsg.swift; sourceTree = "<group>"; };
 		CE542AA2234B394E00307AAF /* PlayerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPresenter.swift; sourceTree = "<group>"; };
+		CE542AA4234B583E00307AAF /* ViewRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRotate.swift; sourceTree = "<group>"; };
+		CE542AA6234B5AF200307AAF /* Getlyric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Getlyric.swift; sourceTree = "<group>"; };
 		CE76DD5A1F889F8F00B4441B /* music2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = music2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76DD5D1F889F8F00B4441B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE76DD5F1F889F8F00B4441B /* ListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListController.swift; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 				CE542A98234B033700307AAF /* Docsurl.swift */,
 				CE542A9A234B0DB300307AAF /* Data.swift */,
 				CE542A9E234B319900307AAF /* Mp3File.swift */,
+				CE542AA6234B5AF200307AAF /* Getlyric.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -185,6 +190,7 @@
 				CE178D6A234AF16B000C5CD9 /* StringExtension.swift */,
 				CE542A94234AFE7700307AAF /* RequestHTTP.swift */,
 				CE542AA0234B35F900307AAF /* SwiftMsg.swift */,
+				CE542AA4234B583E00307AAF /* ViewRotate.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -555,6 +561,8 @@
 				CE76DD5E1F889F8F00B4441B /* AppDelegate.swift in Sources */,
 				CE542A9B234B0DB300307AAF /* Data.swift in Sources */,
 				CE178D69234AF13C000C5CD9 /* UIImageViewExtension.swift in Sources */,
+				CE542AA7234B5AF200307AAF /* Getlyric.swift in Sources */,
+				CE542AA5234B583E00307AAF /* ViewRotate.swift in Sources */,
 				CE76DD601F889F8F00B4441B /* ListController.swift in Sources */,
 				CEF1B1561F8A349200407F67 /* PlayerController.swift in Sources */,
 				CE542AA3234B394E00307AAF /* PlayerPresenter.swift in Sources */,

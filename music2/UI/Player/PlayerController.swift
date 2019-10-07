@@ -9,31 +9,34 @@
 import Foundation
 import UIKit
 import AVFoundation
-import MediaPlayer
+
 import CircularSlider
 import SwiftMessages
-import NYAlertViewController
 import AudioToolbox
 import DTZFloatingActionButton
+import NYAlertViewController
 
-var is_touching = 0
-var is_touching_3d = 0
-var is_moved = 0
+
 
 protocol PlayerView: NSObjectProtocol {
     
+    func AlertView(alertViewController: NYAlertViewController)
+    func SetLiveLyric(lyric11:String, lyric22: String)
+    func SetCurrentTime(time: String)
+    func InsertSubview(backgroundImage: UIImageView)
+    func SetTitle(str: String)
+    func SetArtist(str: String)
+    func AlbumImg(img: UIImage)
+    func SetAlbum(str: String)
+    func SetEnd(str: String)
+    func SetSlider(progress: Float)
     
 }
 
 class PlayerController: UIViewController , UIDocumentInteractionControllerDelegate{
 
     var mPresenter = PlayerPresenter()
-    
     var docController:UIDocumentInteractionController!
-    var lyric_time = ""
-    var lyric = ""
-    var timer:Timer!
-    let kRotationAnimationKey = "com.myapplication.rotationanimationkey"
     
     @IBOutlet weak var slider_c: CircularSlider!
     @IBOutlet weak var artwork: UIImageView!
@@ -52,7 +55,6 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
         docController = nil
     }
     
-    
     @IBAction func share(_ sender: Any) {
         let fileManager2 = FileManager.default
         let docsurl = try! fileManager2.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -61,11 +63,8 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
 
         if fileManager2.fileExists(atPath: destinationFileUrl.path){
             docController = UIDocumentInteractionController(url: destinationFileUrl)
-            
             docController.name = NSURL(fileURLWithPath: destinationFileUrl.path).lastPathComponent
-            
             docController.delegate = self
-            
             docController.presentPreview(animated: true)
             docController.presentOpenInMenu(from: self.view.frame, in: self.view, animated: true)
         }
@@ -73,324 +72,137 @@ class PlayerController: UIViewController , UIDocumentInteractionControllerDelega
             print("document was not found")
         }
     }
+    
     @IBAction func lyric(_ sender: Any) {
-        let alertViewController = NYAlertViewController()
-        // Set a title and message
-        alertViewController.title = "가사"
-        alertViewController.message = "\n" + lyric + "\n"
-        // Customize appearance as desired
-        alertViewController.buttonCornerRadius = 20.0
-        alertViewController.view.tintColor = self.view.tintColor
-        alertViewController.titleFont = UIFont(name: "AvenirNext-Bold", size: 19.0)
-        alertViewController.messageFont = UIFont(name: "AvenirNext-Medium", size: 16.0)
-        alertViewController.cancelButtonTitleFont = UIFont(name: "AvenirNext-Medium", size: 16.0)
-        alertViewController.cancelButtonTitleFont = UIFont(name: "AvenirNext-Medium", size: 16.0)
-        alertViewController.swipeDismissalGestureEnabled = true
-        alertViewController.backgroundTapDismissalGestureEnabled = true
-        // Add alert actions
-        let cancelAction = NYAlertAction(
-            title: "Done",
-            style: .cancel,
-            handler: { (action: NYAlertAction!) -> Void in
-                self.dismiss(animated: true, completion: nil)
-
-            }
-        )
-        alertViewController.addAction(cancelAction)
-        // Present the alert view controller
-        self.present(alertViewController, animated: true, completion: nil)
+        mPresenter.ShowLyric()
     }
 
     override func viewWillAppear(_ animated: Bool){
-        //UIApplication.shared.statusBarStyle = .lightContent
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = .clear
-        navigationController?.navigationBar.tintColor = UIColor.red
-        //UINavigationBar.appearance().barStyle = .default
-        //UIApplication.shared.statusBarStyle = .default
-        DTZFABManager.shared.hide()
+        initDesign()
     }
-    
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         mPresenter.attachView(self)
-        
+        mPresenter.GetMetaData()
+        mPresenter.GetEnd()
+        mPresenter.SetTimer()
         slider_c.delegate = self
-        self.title = ""
-        
-        func rotateView(view: UIView, duration: Double = 10) {
-            if view.layer.animation(forKey: kRotationAnimationKey) == nil {
-                let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation")
-                
-                rotationAnimation.fromValue = 0.0
-                rotationAnimation.toValue = Float(Double.pi * 2.0)
-                rotationAnimation.duration = duration
-                rotationAnimation.repeatCount = Float.infinity
-                
-                view.layer.add(rotationAnimation, forKey: kRotationAnimationKey)
-            }
-        }
-        
-        //rotateView(view: self.artwork)
-        
-        artwork.layer.borderWidth = 1
-        artwork.layer.masksToBounds = false
-        artwork.layer.borderColor = UIColor.clear.cgColor
-        artwork.layer.cornerRadius = artwork.frame.height/2
-        artwork.clipsToBounds = true
-
-        let playerItem = AVPlayerItem(url: myurl! as URL )
-        
-        let songAsset = AVURLAsset(url: myurl! as URL, options: nil)
-        if !(songAsset.lyrics == nil){
-            lyric =  songAsset.lyrics!
-        }
-        
-        //print(lyricsText)
-        
-
-        var t_title = ""
-        var a_artist = ""
-        let metadataList = playerItem.asset.commonMetadata
-        for item in metadataList {
-            if item.commonKey!.rawValue == "title" {
-                tittle.text = item.stringValue!
-                t_title = item.stringValue!
-            }
-            if item.commonKey!.rawValue == "artist" {
-                artist.text = item.stringValue!
-                a_artist = item.stringValue!
-            }
-            if item.commonKey!.rawValue == "albumName" {
-                album.text = item.stringValue!
-            }
-            if item.commonKey!.rawValue == "artwork" {
-                if let audioImage = UIImage(data: (item.value as! NSData) as Data) {
-                    //let audioArtwork = MPMediaItemArtwork(image: audioImage)
-                    //println(audioImage.description)
-                    artwork.image = audioImage
-                    
-                    let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-                    backgroundImage.image = blurImage(image: audioImage)
-                    self.view.insertSubview(backgroundImage, at: 0)
-                    
-                 
-                    UIApplication.shared.beginReceivingRemoteControlEvents()
-                    
-                    let image = audioImage
-                    let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in
-                        return image
-                    }
-                    
-                    let nowPlayingInfo2: [String: Any] = [
-                        MPMediaItemPropertyArtist: a_artist,
-                        MPMediaItemPropertyTitle: t_title,
-                        MPMediaItemPropertyArtwork: mediaArtwork,
-                        MPNowPlayingInfoPropertyIsLiveStream: false
-                    ]
-                    
-                    MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo2
-                    
-                    let commandCenter = MPRemoteCommandCenter.shared()
-                    
-                    commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-                        //Update your button here for the pause command
-                        player.pause()
-                        return .success
-                    }
-                    
-                    commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-                        //Update your button here for the play command
-                        player.play()
-                        return .success
-                    }
-                    
-                    //lyric1.textColor = blurImage(image: audioImage)?.averageColor()
-                }
-            }
-            //print(item.commonKey)
-        }
-        
-    
-        
-        /*
-        let time = DispatchTime.now() + .seconds(0)
-        DispatchQueue.main.asyncAfter(deadline: time) {
-            
-        }*/
-        
-        
-        
-        let str = (t_title + " " + a_artist).addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
-        let tmp = (str?.replacingOccurrences(of: " ", with: "%20"))
-        let url2 = URL(string: "https://app." + "genie" + ".co.kr/Iv3/Search/f_Search_Song.asp?query=" + tmp! + "&pagesize=1")
-        let taskk = URLSession.shared.dataTask(with: url2! as URL) { data, response, error in
-            guard let data = data, error == nil else { return }
-            //print(NSString(data: data, encoding: String.Encoding.utf8.rawValue))
-            let text = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
-            if (text.contains("SONG_ID")){
-                let s_code = (text.components(separatedBy: "SONG_ID\":\"")[1].components(separatedBy: "\"")[0])
-                
-                let url21 = URL(string: "http://dn.genie.co.kr/app/purchase/get_msl.asp?path=a&songid=" + s_code)
-                let taskk2 = URLSession.shared.dataTask(with: url21! as URL) { data, response, error in
-                    guard let data = data, error == nil else { return }
-                    //print(NSString(data: data, encoding: String.Encoding.utf8.rawValue))
-                    let text = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
-                    //print(text)
-                    self.lyric_time = text
-                }
-                taskk2.resume()
-            }
-        }
-        taskk.resume()
-        
-        
-        if(timer != nil){timer.invalidate()}
-        timer = Timer(timeInterval: 0.5, target: self, selector: #selector(PlayerController.timerDidFire), userInfo: nil, repeats: true)
-        RunLoop.current.add(timer, forMode: RunLoop.Mode.common)
-
-        var end_time_m = ""
-        var end_time_s = ""
-        if(Int(player.duration) < 60){
-            end_time_m = "0"
-            end_time_s = Int(player.duration).description
-        }else{
-            end_time_m = (Int(player.duration) / Int(60)).description
-            end_time_s = (Int(player.duration) % Int(60)).description
-        }
-        if(Int(end_time_s)! < 10){
-            end_time_s = "0" + end_time_s
-        }
-        end.text = end_time_m + ":" + end_time_s
     }
-    
-    
-    @objc func timerDidFire(){
-        let time_change = Int(Float(player.currentTime) * 1000 )
-        let arr_time = lyric_time.components(separatedBy: "\",\"")
-        if arr_time.count > 5{
-            for i in 1...arr_time.count - 1{
-                if Int(arr_time[i].components(separatedBy: "\":\"")[0])! >= time_change{
-                    lyric1.text = arr_time[i-1].components(separatedBy: "\":\"")[1]
-                    lyric2.text = arr_time[i].components(separatedBy: "\":\"")[1]
-                    break
-                }
-            }
-        }
-        
-        //print(SecondViewController.player.currentTime)
-        let tmp_current = Int(player.currentTime).description
-        var start_time_m = ""
-        var start_time_s = ""
 
-        if(Int(player.currentTime) < 60){
-            start_time_m = "0"
-            start_time_s = tmp_current
-        }else{
-            start_time_m = (Int(tmp_current)! / Int(60)).description
-            start_time_s = (Int(tmp_current)! % Int(60)).description
-        }
-        if(Int(start_time_s)! < 10){
-            start_time_s = "0" + start_time_s
-        }
-        
-        start.text = start_time_m + ":" + start_time_s
-        
-         if is_touching == 0{
-            let progress = player.currentTime / player.duration * 100
-            slider_c.setValue(Float(progress), animated: true)
-        }
-    }
-    
 }
 
 extension PlayerController: CircularSliderDelegate {
+    
     func circularSlider(_ circularSlider: CircularSlider, valueForValue value: Float) -> Float {
-        if is_touching == 1{
-            let tmp = player.duration
-            let tmp2 = Float(tmp) * Float(value) * 0.01
-            player.currentTime = TimeInterval(tmp2)
-        }
-        return floorf(value)
+        return mPresenter.GetcircularSlider(value: value)
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        is_touching = 1
-        is_touching_3d = 0
+        mPresenter.SetTouching(1)
+        mPresenter.Set3DTouching(0)
     }
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         if let touch = touches.first {
             if #available(iOS 9.0, *) {
                 if traitCollection.forceTouchCapability == UIForceTouchCapability.available {
-                    if touch.force >= touch.maximumPossibleForce && is_touching_3d == 0{
-                        is_touching_3d = 1
-                        //AudioServicesPlaySystemSound(1519)
+                    if touch.force >= touch.maximumPossibleForce && mPresenter.Get3DTouching() == 0{
+                        mPresenter.Set3DTouching(1)
                         AudioServicesPlaySystemSound(1520)
-                        //AudioServicesPlaySystemSound(1521)
+
                         if player.isPlaying{
                             SwiftMessages.hideAll()
-                            var config = SwiftMessages.Config()
-                            config.duration = .seconds(seconds: 0.1)
-                            config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar)
-                            
-                            let view = MessageView.viewFromNib(layout: .statusLine)
-                            view.configureTheme(.warning)
-                            view.configureDropShadow()
-                            let iconText = [""].randomElement()!
-                            view.configureContent(title: "", body: "일시정지", iconText: iconText)
-                            SwiftMessages.show(config: config, view: view)
-                            
+                            SwiftMsg("일시정지",.warning,0.1)
                             player.pause()
                             
                             let pausedTime : CFTimeInterval = (self.artwork?.layer.convertTime(CACurrentMediaTime(), from: nil))!
                             self.artwork?.layer.speed = 0.0
                             self.artwork?.layer.timeOffset = pausedTime
-                        }else{
+                        }
+                        else{
                             SwiftMessages.hideAll()
-                            var config = SwiftMessages.Config()
-                            config.duration = .seconds(seconds: 0.1)
-                            config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar)
-                            
-                            let view = MessageView.viewFromNib(layout: .statusLine)
-                            view.configureTheme(.success)
-                            view.configureDropShadow()
-                            let iconText = [""].randomElement()!
-                            view.configureContent(title: "", body: "재생", iconText: iconText)
-                            SwiftMessages.show(config: config, view: view)
-                            
+                            SwiftMsg("재생",.success,0.1)
                             player.play()
                             
                             self.artwork?.layer.speed = 1.0
                             self.artwork?.layer.timeOffset = 0.0
                         }
-                    } else {
-                        
                     }
                 }
-            }else{
-                //is_moved = is_moved + 1
             }
         }
     }
+    
     func is3dTouchAvailable(traitCollection: UITraitCollection) -> Bool {
         return traitCollection.forceTouchCapability == UIForceTouchCapability.available
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if is_touching_3d == 1{
-            
-        }
-        is_touching = 0
-        is_moved = 0
+        mPresenter.SetTouching(0)
+        mPresenter.SetMoving(0)
     }
     
 }
 
 extension PlayerController: PlayerView {
     
+    func AlertView(alertViewController: NYAlertViewController){
+        self.present(alertViewController, animated: true, completion: nil)
+    }
+    
+    func initDesign(){
+        self.title = ""
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
+        navigationController?.navigationBar.tintColor = UIColor.red
+        
+        DTZFABManager.shared.hide()
+
+        artwork.layer.borderWidth = 1
+        artwork.layer.masksToBounds = false
+        artwork.layer.borderColor = UIColor.clear.cgColor
+        artwork.layer.cornerRadius = artwork.frame.height/2
+        artwork.clipsToBounds = true
+        rotateView(view: self.artwork)
+    }
+    
+    func SetLiveLyric(lyric11:String, lyric22: String){
+        lyric1.text = lyric11
+        lyric2.text = lyric22
+    }
+    
+    func SetCurrentTime(time: String){
+        start.text = time
+    }
+    
+    func InsertSubview(backgroundImage: UIImageView){
+        self.view.insertSubview(backgroundImage, at: 0)
+    }
+    
+    func SetTitle(str: String){
+        tittle.text = str
+    }
+    
+    func SetArtist(str: String){
+        artist.text = str
+    }
+    
+    func SetAlbum(str: String){
+        album.text = str
+    }
+    
+    func AlbumImg(img: UIImage){
+        artwork.image = img
+    }
+    
+    func SetEnd(str: String){
+        end.text = str
+    }
+    
+    func SetSlider(progress: Float){
+        slider_c.setValue(progress, animated: true)
+    }
 }

@@ -9,13 +9,13 @@
 import Foundation
 import SwiftMessages
 
-func SwiftMsg(str:String){
+func SwiftMsg(_ str:String, _ theme: Theme, _ time: Float){
     var config = SwiftMessages.Config()
-    config.duration = .seconds(seconds: 0.6)
+    config.duration = .seconds(seconds: TimeInterval(time))
     config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar)
-    
+
     let view = MessageView.viewFromNib(layout: .statusLine)
-    view.configureTheme(.error)
+    view.configureTheme(theme)
     view.configureDropShadow()
     let iconText = [""].randomElement()!
     view.configureContent(title: "", body: str, iconText: iconText)
