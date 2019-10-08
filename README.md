@@ -1,6 +1,6 @@
-# Jungmusic-ios
+# Jungmusic-iOS
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17) </br></br>
+</br>
 
 ## Introduction
 Jung Music Player</br>
@@ -30,7 +30,7 @@ MVP
 # License
 
 ```
-   Copyright 2019 WIFFY
+   Copyright 2019 Jungh0
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
