@@ -20,6 +20,7 @@ Jung Music Player</br>
 MVP
 
 ## Specs & Open-source libraries
+- Support iOS13
 - Swift5
 - MVP Architecture
 - CircularSlider
