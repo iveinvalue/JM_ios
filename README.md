@@ -22,7 +22,8 @@ MVP
 ## Specs & Open-source libraries
 - Support iOS13
 - Swift5
-- MVP Architecture
+- Architecture
+   - MVP (Model-View-Presenter)
 - [CircularSlider](https://github.com/taglia3/CircularSlider)
 - [SwiftMessages](https://github.com/SwiftKickMobile/SwiftMessages)
 - [NYAlertViewController](https://github.com/nealyoung/NYAlertViewController)
