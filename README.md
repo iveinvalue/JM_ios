@@ -23,10 +23,10 @@ MVP
 - Support iOS13
 - Swift5
 - MVP Architecture
-- CircularSlider
-- SwiftMessages
-- NYAlertViewController
-- DTZFloatingActionButton
+- [CircularSlider](https://github.com/taglia3/CircularSlider)
+- [SwiftMessages](https://github.com/SwiftKickMobile/SwiftMessages)
+- [NYAlertViewController](https://github.com/nealyoung/NYAlertViewController)
+- [DTZFloatingActionButton](https://github.com/hintoz/DTZFloatingActionButton)
 
 # License
 
