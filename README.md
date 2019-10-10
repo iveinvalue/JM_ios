@@ -19,7 +19,7 @@
 <img src="https://user-images.githubusercontent.com/8678595/66380196-df0be680-e9f1-11e9-96e7-9fbb50123064.PNG" width="200px">
 
 ## Architecture
-MVP
+<img width="600px" src="https://user-images.githubusercontent.com/8678595/66544658-b7dd2280-eb73-11e9-9872-089b1f452f4f.png">
 
 ## Specs & Open-source libraries
 - Support iOS13
