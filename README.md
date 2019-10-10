@@ -2,12 +2,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 </br>
 
-## Introduction
-Jung Music Player</br>
-<img src="https://user-images.githubusercontent.com/8678595/66380192-de735000-e9f1-11e9-8a12-d9006392c37c.PNG" width="200px">
-<img src="https://user-images.githubusercontent.com/8678595/66380193-df0be680-e9f1-11e9-84ca-0a52a2e430d1.PNG" width="200px">
-<img src="https://user-images.githubusercontent.com/8678595/66380195-df0be680-e9f1-11e9-915c-f5558d6d6230.PNG" width="200px">
-<img src="https://user-images.githubusercontent.com/8678595/66380196-df0be680-e9f1-11e9-96e7-9fbb50123064.PNG" width="200px">
+<img alt="icon" src="https://user-images.githubusercontent.com/8678595/66543762-3edccb80-eb71-11e9-8caf-b246a6c9dfcd.png" align="right" width="25%">
 
 ## Key Features
 - [x] Sharing function
@@ -15,6 +10,13 @@ Jung Music Player</br>
 - [x] Chart function
 - [x] Save function
 - [x] Live lyric function
+
+## Introduction
+**Jung Music Player**</br>
+<img src="https://user-images.githubusercontent.com/8678595/66380192-de735000-e9f1-11e9-8a12-d9006392c37c.PNG" width="200px">
+<img src="https://user-images.githubusercontent.com/8678595/66380193-df0be680-e9f1-11e9-84ca-0a52a2e430d1.PNG" width="200px">
+<img src="https://user-images.githubusercontent.com/8678595/66380195-df0be680-e9f1-11e9-915c-f5558d6d6230.PNG" width="200px">
+<img src="https://user-images.githubusercontent.com/8678595/66380196-df0be680-e9f1-11e9-96e7-9fbb50123064.PNG" width="200px">
 
 ## Architecture
 MVP
