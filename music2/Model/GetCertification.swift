@@ -18,7 +18,7 @@ class GetCertification{
     }
     
     func Get(){
-        let url = "https://raw.githubusercontent.com/iveinvalue/JM_ios/master/info.txt"
+        let url = "https://raw.githubusercontent.com/jungh0/Jungmusic-ios/master/info.txt"
         RequestHTTP(url: url,completion: {result in
             //print(result)
             GetCertification.uxtk = result.components(separatedBy: "uxtk!")[1].components(separatedBy: "!")[0]

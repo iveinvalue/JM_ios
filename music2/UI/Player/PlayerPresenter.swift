@@ -201,11 +201,11 @@ class PlayerPresenter{
     }
     
     func SetTouching(_ tmp: Int){
-        is_touching = 0
+        is_touching = tmp
     }
     
     func Set3DTouching(_ tmp: Int){
-        is_touching_3d = 0
+        is_touching_3d = tmp
     }
     
     func Get3DTouching() -> Int{
@@ -213,7 +213,7 @@ class PlayerPresenter{
     }
     
     func SetMoving(_ tmp: Int){
-        is_moved = 0
+        is_moved = tmp
     }
     
 }
